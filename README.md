@@ -13,6 +13,7 @@ why autonomy is earned by verification.
 |---|---|
 | [`TASK.md`](TASK.md) | The task: build the two rules from the webinar yourself, on [clash-conference](https://github.com/agilino/clash-conference), and lock them with a deny rule and a hook. |
 | [`cheat-sheet.pdf`](cheat-sheet.pdf) | Four harnesses, one loop: the same moves in Claude Code, GitHub Copilot, Codex and OpenCode, each with its documentation link. |
+| [`guard-tests/`](guard-tests/) | A hook for Claude Code: Claude writes new tests freely, a change to a committed test needs your approval. With its own tests. |
 | [`slides/`](slides/) | The slides as a [Slidev](https://sli.dev) deck. The notes under each slide explain it in German. |
 
 The verification kit is the branch `webinar-solution` of clash-conference: the deny on `tests/**`,
