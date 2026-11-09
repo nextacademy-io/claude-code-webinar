@@ -1,0 +1,17 @@
+{
+  "name": "mastering-claude-code-highlights-slides",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "slidev --open",
+    "build": "slidev build",
+    "export": "slidev export --output dist/mastering-claude-code-highlights.pdf"
+  },
+  "dependencies": {
+    "@slidev/cli": "^52.19.1",
+    "vue": "^3.5.33"
+  },
+  "devDependencies": {
+    "playwright-chromium": "^1.63.0"
+  }
+}

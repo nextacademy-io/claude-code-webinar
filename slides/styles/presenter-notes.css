@@ -1,0 +1,81 @@
+/* Presenter notes — readable in bright light.
+
+   This file styles the presenter UI on purpose (base.css stays scoped to
+   .slidev-layout). Slidev greys out every note segment that is not the current
+   [click] step: #a1a1a1cc, about 5:1 on the dark panel. Every slide here has
+   click markers, so that is most of the text most of the time.
+
+   The fade stays as a hint, at about 12:1. The current step is white and
+   semi-bold, and its click badge is gold — weight and colour still read in
+   sunlight, a grey-level difference does not. */
+
+.dark .slidev-note,
+.dark .slidev-note p,
+.dark .slidev-note li {
+  color: var(--na-zinc-50);
+}
+
+.dark .slidev-note-with-clicks p:not(.slidev-note-fade),
+.dark .slidev-note-with-clicks li:not(.slidev-note-fade) {
+  font-weight: 600;
+}
+
+.dark .slidev-note.slidev-note-with-clicks .slidev-note-fade {
+  color: var(--na-zinc-300);
+  font-weight: 400;
+}
+
+.dark .slidev-note-click-mark.slidev-note-click-mark-active {
+  background: var(--na-accent-500);
+  border-color: var(--na-accent-500);
+  color: var(--na-zinc-950);
+}
+
+.dark .slidev-note-click-mark.slidev-note-click-mark-past,
+.dark .slidev-note-click-mark.slidev-note-click-mark-future {
+  opacity: 0.8;
+}
+
+/* Do/Tun reads dimmer than Say/Sagen through colour, not opacity — the same
+   zinc-300 already used above for the non-current click step, about 12:1 on
+   the dark panel. A faded/alpha'd block would be the first thing to wash out
+   under bright room light.
+
+   Weight is pinned to 400 regardless of click state: Slidev's own
+   [click]-highlighting bolds any note segment that is not the current step
+   (see the with-clicks rule above), and Do/Tun bullets never carry a marker
+   of their own, so without this they inherit whichever weight the
+   surrounding Say/Sagen click state happens to be in — bold zinc-300 reads
+   almost as bright as the zinc-50 Say text, defeating the point. !important
+   because that inherited rule is 3 classes deep and would otherwise win. */
+.dark .slidev-note blockquote,
+.dark .slidev-note blockquote p,
+.dark .slidev-note blockquote li {
+  color: var(--na-zinc-300);
+  font-weight: 400 !important;
+}
+
+/* The prose/prose-invert typography classes Slidev wraps notes in add
+   typographic quote marks around blockquote text by default (it assumes a
+   blockquote is a quotation). Ours is a stage direction, not a quote. */
+.slidev-note blockquote {
+  quotes: none;
+}
+
+/* Say/Sagen content: the read-aloud text, sized for a quick, comfortable read. */
+.slidev-note {
+  font-size: 0.9em;
+  line-height: 1.5;
+}
+
+/* Do/Tun stage directions render as a blockquote and read smaller still —
+   relative to the 0.9em above, so the trainer's eye lands on the read-aloud
+   text first, not the stage direction, and the two stay in proportion. */
+.slidev-note blockquote {
+  margin: 0.25em 0;
+  padding-left: 0.75em;
+  border-left: 2px solid currentColor;
+  font-size: 0.78em;
+  line-height: 1.35;
+  font-style: normal;
+}
