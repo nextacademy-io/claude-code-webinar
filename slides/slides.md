@@ -1,13 +1,14 @@
 ---
 theme: none
-title: Mastering Claude Code
+title: Claude Code Black Belt
 info: |
-  ## Mastering Claude Code
-  The loop, the gate, the proof.
+  ## Claude Code Black Belt
+  Zugzwang: who decides when the agent has to move?
   nextacademy.io · Adam Furmanczuk
 colorSchema: dark
 highlighter: shiki
 lineNumbers: false
+selectable: true
 drawings:
   enabled: false
 transition: fade
@@ -23,9 +24,9 @@ layout: concept
 <div class="flex flex-col items-center gap-8 text-center">
   <img src="/brand/nalogo-white-n.svg" alt="nextacademy.io" class="w-20 h-20" />
   <div>
-    <h1 class="!mb-2">Mastering Claude Code</h1>
+    <h1 class="!mb-2">Claude Code Black Belt</h1>
     <p class="text-2xl" style="color: var(--na-fg-muted)">
-      Learn What's Next. <span style="color: var(--na-primary-400); font-weight: 700">Today.</span>
+      Zugzwang: <span style="color: var(--na-primary-400); font-weight: 700">who decides when the agent has to move?</span>
     </p>
   </div>
   <div class="text-lg" style="color: var(--na-fg-muted)">Adam Furmanczuk · nextacademy.io</div>
@@ -39,40 +40,144 @@ layout: concept
 </div>
 
 <!--
-- Dieses Deck gehört zum einstündigen Webinar «Claude Code Black Belt» von nextacademy.io. Es zeigt an einer echten App, wie ein Coding-Agent arbeitet und wie du ihm Grenzen setzt, die er nicht überschreiten kann
-- Das Geschenk am Ende ist dieses Repo: eine Übungsaufgabe auf derselben App (`TASK.md`), das Verification Kit auf dem Branch `webinar-solution` und ein Cheat Sheet für vier Tools
+- Zugzwang im Schach: Du musst ziehen, jeder Zug hat einen Preis.
+- Was das für Claude Code bedeutet heute im Webinar.
+-->
+
+---
+layout: concept
+class: na-poll
+heading: "How often do you work with a coding agent?"
+lines:
+  - "Claude Code or any other. Type the number in the chat."
+---
+
+<div class="flex flex-col items-center gap-6 w-full">
+<div class="text-sm font-mono" style="color: var(--na-fg-muted)">Poll 1 of 4</div>
+<div class="grid grid-cols-4 gap-3 w-full max-w-3xl">
+  <div class="na-card px-3 py-3 text-center"><div class="text-3xl font-bold" style="color: var(--na-accent-500)">1</div><div class="text-base mt-1">almost never</div></div>
+  <div class="na-card px-3 py-3 text-center"><div class="text-3xl font-bold" style="color: var(--na-accent-500)">2</div><div class="text-base mt-1">rarely</div></div>
+  <div class="na-card px-3 py-3 text-center"><div class="text-3xl font-bold" style="color: var(--na-accent-500)">3</div><div class="text-base mt-1">weekly</div></div>
+  <div class="na-card px-3 py-3 text-center"><div class="text-3xl font-bold" style="color: var(--na-accent-500)">4</div><div class="text-base mt-1">daily</div></div>
+</div>
+</div>
+
+<!--
+- Vier kurze Fragen. Kein Test, ich will nur wissen, wer da ist.
+- 💬 Eine Zahl in den Chat.
+- Wer noch nichts hat, ist hier richtig. Wir erklären jeden Begriff.
+- Kurz vorlesen, wo die Mehrheit liegt.
+-->
+
+---
+layout: concept
+class: na-poll
+heading: "What do you work with?"
+lines:
+  - "Several? Type all numbers, for example: 1 3"
+---
+
+<div class="flex flex-col items-center gap-6 w-full">
+<div class="text-sm font-mono" style="color: var(--na-fg-muted)">Poll 2 of 4</div>
+<div class="grid grid-cols-5 gap-3 w-full max-w-4xl">
+  <div class="na-card px-3 py-3 text-center"><div class="text-3xl font-bold" style="color: var(--na-accent-500)">1</div><div class="text-base mt-1">Claude Code</div></div>
+  <div class="na-card px-3 py-3 text-center"><div class="text-3xl font-bold" style="color: var(--na-accent-500)">2</div><div class="text-base mt-1">GitHub Copilot</div></div>
+  <div class="na-card px-3 py-3 text-center"><div class="text-3xl font-bold" style="color: var(--na-accent-500)">3</div><div class="text-base mt-1">Codex</div></div>
+  <div class="na-card px-3 py-3 text-center"><div class="text-3xl font-bold" style="color: var(--na-accent-500)">4</div><div class="text-base mt-1">Cursor</div></div>
+  <div class="na-card px-3 py-3 text-center"><div class="text-3xl font-bold" style="color: var(--na-accent-500)">5</div><div class="text-base mt-1">something else</div></div>
+</div>
+</div>
+
+<!--
+- 💬 Mehrere Zahlen gehen.
+- Notieren: das Tool mit den meisten Stimmen ausser Claude Code.
+- Kurz vorlesen.
+-->
+
+---
+layout: concept
+class: na-poll
+heading: "What have you set up?"
+lines:
+  - "Several? Type all numbers, for example: 2 4"
+---
+
+<div class="flex flex-col items-center gap-6 w-full">
+<div class="text-sm font-mono" style="color: var(--na-fg-muted)">Poll 3 of 4</div>
+<div class="grid grid-cols-5 gap-3 w-full max-w-4xl">
+  <div class="na-card px-3 py-3 text-center"><div class="text-3xl font-bold" style="color: var(--na-accent-500)">1</div><div class="text-base mt-1">chat only</div></div>
+  <div class="na-card px-3 py-3 text-center"><div class="text-3xl font-bold" style="color: var(--na-accent-500)">2</div><div class="text-base mt-1">CLAUDE.md or AGENTS.md</div></div>
+  <div class="na-card px-3 py-3 text-center"><div class="text-3xl font-bold" style="color: var(--na-accent-500)">3</div><div class="text-base mt-1">skills</div></div>
+  <div class="na-card px-3 py-3 text-center"><div class="text-3xl font-bold" style="color: var(--na-accent-500)">4</div><div class="text-base mt-1">hooks</div></div>
+  <div class="na-card px-3 py-3 text-center"><div class="text-3xl font-bold" style="color: var(--na-accent-500)">5</div><div class="text-base mt-1">subagents or agent teams</div></div>
+</div>
+</div>
+
+<!--
+- 💬 Mehrere Zahlen gehen.
+- Notieren: wie viele haben 4, Hooks. Kommt bei den Hooks zurück.
+-->
+
+---
+layout: concept
+class: na-poll
+heading: "Has your agent ever changed an existing test?"
+lines:
+  - "Type the number in the chat. An honest answer helps."
+---
+
+<div class="flex flex-col items-center gap-6 w-full">
+<div class="text-sm font-mono" style="color: var(--na-fg-muted)">Poll 4 of 4</div>
+<div class="grid grid-cols-4 gap-3 w-full max-w-3xl">
+  <div class="na-card px-3 py-3 text-center"><div class="text-3xl font-bold" style="color: var(--na-accent-500)">1</div><div class="text-base mt-1">yes, I noticed</div></div>
+  <div class="na-card px-3 py-3 text-center"><div class="text-3xl font-bold" style="color: var(--na-accent-500)">2</div><div class="text-base mt-1">yes, noticed later</div></div>
+  <div class="na-card px-3 py-3 text-center"><div class="text-3xl font-bold" style="color: var(--na-accent-500)">3</div><div class="text-base mt-1">no</div></div>
+  <div class="na-card px-3 py-3 text-center"><div class="text-3xl font-bold" style="color: var(--na-accent-500)">4</div><div class="text-base mt-1">don't know</div></div>
+</div>
+</div>
+
+<!--
+- Ehrlich antworten lohnt sich.
+- Notieren: wie viele haben 4, weiss ich nicht. Kommt beim Zugzwang zurück.
+- 💬 Wer mag: eure Rolle in den Chat. Dev, PO, BA, Architektur, UX.
 -->
 
 ---
 layout: concept
 heading: "Where do you stand today?"
 lines:
-  - "Three quick polls. Anonymous. Any tool counts, and starting from zero counts too."
+  - "How much does the agent do without you?"
 ---
 
 <div class="flex flex-col items-center gap-6 w-full">
 <div class="flex items-end gap-4 w-full max-w-4xl justify-center text-sm">
-  <div class="na-card px-4 py-3" :style="$clicks >= 1 ? 'border-color: var(--na-accent-500); box-shadow: var(--na-shadow-accent)' : ''">you watch</div>
+  <div class="na-card px-4 py-3" :style="$clicks >= 1 ? 'border-color: var(--na-accent-500); box-shadow: var(--na-shadow-accent)' : ''">pair with Claude</div>
   <div class="na-card px-4 py-5 w-28">&nbsp;</div>
   <div class="na-card px-4 py-7 w-28">&nbsp;</div>
   <div class="na-card px-4 py-9 w-28">&nbsp;</div>
   <div class="na-card px-4 py-11">CI / routine</div>
 </div>
-<div v-click="1" class="text-xl font-semibold" style="color: var(--na-accent-500)">Today we all start here.</div>
+<div v-click="1" class="text-xl font-semibold" style="color: var(--na-accent-500)">Today's live demo starts here.</div>
 </div>
 
 <!--
-- Im Webinar beginnt hier ein Check-in mit drei Umfragen: Womit arbeitest du (Claude Code, GitHub Copilot, Codex, OpenCode, ein anderes Tool, noch keins)? Was hast du schon eingerichtet (nur gefragt, CLAUDE.md oder AGENTS.md, Skills, Hooks, Agent-Teams)? Was kostet dich am meisten?
-- Die Treppe zeigt, wie viel ein Agent ohne dich tun darf, von «you watch» bis «CI / routine». Sie kommt auf Folie 13 zurück
-- [click] Wir beginnen alle unten: Du schaust jedem Schritt zu
+- Ihr steht an ganz verschiedenen Stellen.
+- Die Treppe: wie viel der Agent ohne euch macht. Unten pair with Claude, oben CI.
+- [click] Die Demo fängt unten an: pair with Claude.
+- Zuerst eine Frage, bei der ihr euch festlegt.
 -->
 
 ---
 layout: concept
-heading: "One question, two answers"
+heading: "The app: one question, two answers"
 ---
 
-<div class="flex flex-col items-center gap-6 w-full max-w-3xl">
+<div class="grid grid-cols-2 gap-8 w-full max-w-5xl items-center">
+<div class="flex flex-col gap-2">
+  <img src="/clash-conference.png" alt="clash-conference: a list of three draft talks, each with a start time and a room" class="rounded-lg" style="border: 1px solid var(--na-zinc-700)" />
+  <div class="text-sm" style="color: var(--na-fg-muted)">clash-conference: the program of a conference. A talk has a title, a start and a room.</div>
+</div>
+<div class="flex flex-col gap-6">
 
 ```txt
 Can a talk start in the past?
@@ -83,13 +188,17 @@ Name the file behind each answer.
 <div v-click class="text-2xl font-semibold" style="color: var(--na-accent-500)">Both: yes. Nothing checks either.</div>
 
 </div>
+</div>
 
 <!--
-- Die App ist clash-conference auf `localhost:3001`: das Programm einer Konferenz. Ein Talk hat Titel, Beschreibung, Startzeit und optional einen Raum
-- Die Frage an Claude Code, auf dem Branch `webinar-start`, wörtlich: Read the code only, change nothing. Can a talk start in the past? Can two talks share a room and a start? Name the file and line behind each answer.
-- [click] Beides geht. `lib/validation.ts` prüft nur, ob das Datum gültig ist, nicht, ob es sinnvoll ist. Ein alter Test, «a start in the past is accepted», verlangt das sogar
-- Hier steht kein Fehler im Code, hier fehlen zwei Regeln. Wann ein Talk beginnen darf, ist eine Fachfrage: für POs eine Entscheidung, für BAs ein Akzeptanzkriterium, für UX ein Text im Interface
-- Claude lag richtig, weil es gelesen hat. Geraten hätte genauso sicher geklungen
+- 🖥 20 Sekunden Browser: die Liste, einmal Edit.
+- Ihr organisiert eine Konferenz. Ein Talk hat Titel, Start und Raum.
+- 📊 Beides geht, nur eins oder keins? Schliessen, zeigen.
+- 🖥 Prompt abschicken. Stille mit Erzählen füllen.
+- [click] Beides geht. Das Datum ist gültig, ob es sinnvoll ist, prüft niemand.
+- Ein alter Test verlangt sogar die Vergangenheit. Merkt ihn euch.
+- Kein Fehler im Code, hier fehlen zwei Regeln.
+- Claude lag richtig, weil es gelesen hat. Liest es immer?
 -->
 
 ---
@@ -97,27 +206,34 @@ layout: concept
 heading: "Fluent is not the same as true"
 lines:
   - "The model always produces something that reads well."
+  - "It reads your code on its own. It guesses where it thinks it already knows."
 ---
 
-<div class="flex gap-6 w-full max-w-3xl">
+<div class="flex flex-col gap-4 w-full max-w-4xl">
+<div class="na-card px-4 py-3 font-mono text-sm">Can Claude still change a test with sed -i when Edit(tests/**) is denied?</div>
+<div class="flex gap-6 w-full">
   <div class="na-card p-5 flex-1" style="border-color: var(--na-error-500)">
-    <div class="font-mono text-xs mb-2" style="color: var(--na-error-500)">guessing</div>
-    <div class="text-base">"What does lib/validation.ts check for a start?"</div>
-    <div class="text-sm mt-2" style="color: var(--na-fg-muted)">Answer from training. Plausible. Maybe wrong.</div>
+    <div class="font-mono text-xs mb-2" style="color: var(--na-error-500)">guessing · "quick question"</div>
+    <div class="text-base">"Yes: the deny only covers the file tools, not Bash."</div>
+    <div class="text-sm mt-2" style="color: var(--na-fg-muted)">No tool call. From training. Sure of itself. Wrong.</div>
   </div>
   <div class="na-card p-5 flex-1" v-click style="border-color: var(--na-success-500)">
-    <div class="font-mono text-xs mb-2" style="color: var(--na-success-500)">grounded</div>
-    <div class="text-base">"Read @lib/validation.ts. What does it check for a start?"</div>
-    <div class="text-sm mt-2" style="color: var(--na-fg-muted)">Answer from the file. Checkable.</div>
+    <div class="font-mono text-xs mb-2" style="color: var(--na-success-500)">grounded · "check the docs first"</div>
+    <div class="text-base">"No: Edit deny rules also cover sed, tee and &gt; in Bash."</div>
+    <div class="text-sm mt-2" style="color: var(--na-fg-muted)">Read the permissions docs, then answered. Quotes the source.</div>
   </div>
+</div>
 </div>
 
 <!--
-- Ein Sprachmodell erzeugt immer etwas, das sich gut liest. Ob es stimmt, ist eine andere Frage
-- Links fragt man nach einer Datei, ohne sie zu zeigen: Die Antwort kommt aus dem Training, plausibel und vielleicht falsch
-- [click] Rechts zeigt man die Datei mit `@`: Die Antwort kommt aus der Datei und lässt sich prüfen. So hat Claude auf Folie 3 gearbeitet
-- Die Frage, die ab jetzt jede Rolle stellt: Woher stammt diese Antwort, gelesen oder geraten?
-- Deshalb braucht es ein Programm um das Modell, das nachschaut: den Harness
+- Euren Code liest Claude heute selbst.
+- 🖥 /clear, die schnelle Frage zu sed.
+- Ja, sagt es. Sicher, flüssig, kein Tool-Aufruf davor. Und falsch.
+- [click] 🖥 /clear, dieselbe Frage mit «Check the docs first».
+- Jetzt steht ein Doku-Aufruf davor. Die Antwort: Nein, mit Zitat.
+- Geraten wird, wo es glaubt, es wisse es schon.
+- Ab jetzt die Frage: gelesen oder geraten? Steht ein Tool-Aufruf davor?
+- Deshalb braucht es ein Programm drumherum: den Harness.
 -->
 
 ---
@@ -132,16 +248,14 @@ lines:
 <D07HarnessLoop />
 
 <!--
-- Das Modell allein ist eine Funktion: Text rein, Text raus. Der Ring drumherum ist der Harness. Claude Code ist ein Harness, GitHub Copilot, Codex und OpenCode sind es auch
-- [click] Du schreibst. Der Harness baut den Prompt
-- [click] Er ruft das Modell. Das Modell wählt: ein Tool oder eine Antwort
-- [click] Will es ein Tool, fragt das Gate: Ist das erlaubt?
-- [click] Der Harness führt das Tool aus, nicht das Modell
-- [click] Das Ergebnis kommt zurück in den Prompt, und der Ring dreht sich weiter
-- [click] Erst wenn das Modell mit Text antwortet, endet der Turn
-- Auf Folie 3 hat der Harness `validation.ts` bei «run tool» gelesen. Das Modell hat nur entschieden, die Datei zu lesen
-- Der Ring zeigt, wo du eingreifst: beim Prompt (die Datei zeigen), am Gate (Permissions) und rund um das Tool (Hooks)
-- Wie die vier Tools den Ring beschreiben, steht im Cheat Sheet
+- Der Ring ist der Harness. Claude Code ist einer.
+- [click] Du schreibst, der Harness baut den Prompt.
+- [click] Das Modell wählt: Tool oder Antwort.
+- [click] Das Gate fragt: erlaubt?
+- [click] Der Harness führt aus, nicht das Modell.
+- [click] Ergebnis zurück, der Ring dreht sich.
+- [click] Textantwort: Der Turn endet.
+- Und ihr habt eine Zwischenfrage.
 -->
 
 ---
@@ -154,35 +268,40 @@ lines:
 <D07HarnessLoop btw />
 
 <!--
-- Auf derselben App baut Claude die zwei Regeln ein. Der Prompt: Add both rules: a start must be in the future, and no two talks share a room and a start. Run npm test.
-- Während es arbeitet, kommt eine Zwischenfrage: `/btw why does the old past-start test have to fail?`
-- [click] Die Arbeit bricht nicht ab. `/btw` geht direkt ans Modell, ohne Runde über den Ring. Die Antwort kommt nur aus dem, was schon im Gespräch steht: kein Tool, kein Gate, kein neuer Turn. Darunter läuft der Fix weiter
-- Andere Tools: Copilot kennt ebenfalls `/btw`, Codex hat `/side`, bei OpenCode belegst du dafür selbst eine Taste. Details im Cheat Sheet
-- Nach dem Fix zeigt die App «Start must be in the future.» unter dem Startfeld und «This room is already booked at that time.» unter «Room»
-- Der alte Test «a start in the past is accepted» wird rot, denn er verlangte das Gegenteil der neuen Regel. Die CLAUDE.md auf `webinar-start` sagt: Never edit a file in tests/ to make a failing test pass. Fragt Claude nach, hat es den Rat befolgt. Ändert es den Test, wäre die Änderung hier fachlich richtig, aber niemand hat gefragt
-- `npm test` setzt die Datenbank `dev.db` zurück. Selbst angelegte Talks sind danach weg
+- Jetzt sind alle Tests grün.
+- 🖥 Zwei Regeln in CLAUDE.md. Ich bin die Fachseite.
+- 🖥 Spec-Prompt: Claude schreibt zuerst die Tests, kein App-Code.
+- Während es schreibt, eine Zwischenfrage: /btw.
+- 💬 J oder N: Bricht die Arbeit ab?
+- [click] Nein. Direkt ans Modell, kein Tool, kein neuer Turn.
+- Codex hat /side, Copilot /ask.
+- 🖥 Neun Specs, fünf rot. Gewollt: Der Code fehlt noch.
+- 🖥 Implement-Prompt: talk-rules grün machen. Das dauert, wir machen weiter.
+- Während Claude baut: Wie lange soll es nachdenken?
 -->
 
 ---
 layout: concept
-heading: "Ten runs per level end in a tie"
+heading: "Thinking time: does more effort make a better move?"
+lines:
+  - "Effort sets how much the model thinks on every step."
 ---
 
 <div class="flex flex-col items-center gap-6 w-full max-w-3xl">
-<div class="grid grid-cols-4 gap-2 w-full text-sm">
-  <div></div><div class="font-semibold text-center">correct</div><div class="font-semibold text-center">false +</div><div class="font-semibold text-center">median output tokens</div>
-  <div class="na-card p-3 font-mono">low</div><div class="na-card p-3 text-center">4/4 in 10 of 10</div><div class="na-card p-3 text-center">0</div><div class="na-card p-3 text-center">1366</div>
-  <div class="na-card p-3 font-mono" v-click="1">high</div><div class="na-card p-3 text-center" v-click="1">4/4 in 10 of 10</div><div class="na-card p-3 text-center" v-click="1">0</div><div class="na-card p-3 text-center" v-click="1">1658</div>
+<div class="grid grid-cols-2 gap-6 w-full">
+  <div class="na-card p-5 text-center font-mono text-xl">--effort low</div>
+  <div class="na-card p-5 text-center font-mono text-xl" style="border-color: var(--na-accent-500)">--effort high</div>
 </div>
-<div v-click="1" class="text-xl font-semibold" style="color: var(--na-accent-500)">Every run found all four bugs. Not one false positive.</div>
+<div class="text-lg">Same file. Same prompt. Same model. Four hidden bugs.</div>
+<div v-click class="text-xl font-semibold" style="color: var(--na-accent-500)">The race starts now. The result comes later.</div>
 </div>
 
 <!--
-- Effort heisst, wie viel das Modell auf jedem Schritt nachdenkt
-- Ein Messwert aus dem Kurs: dieselbe Datei, derselbe Prompt, dasselbe Modell, je zehn Läufe. Auf low findet jeder Lauf alle vier Bugs, ohne falschen Fund
-- [click] Auf high genau dasselbe. Der Median steigt von 1366 auf 1658 Output-Tokens, etwa ein Fünftel mehr, für längere Begründungen. Die Bereiche überlappen nicht
-- Das gilt für diese Aufgabe, eine kleine Datei und ein Modell. Ein Messwert, kein Gesetz
-- Mehr Denken ändert nicht, was der Loop darf. Das entscheiden die Permissions
+- Im Schach hat jeder Zug Bedenkzeit. Bei Claude heisst sie Effort.
+- Mehr Bedenkzeit, besserer Zug? Wir messen es.
+- Dieselbe Datei, derselbe Prompt, dasselbe Modell, vier Bugs.
+- [click] 🖥 Rennterminal: node measure.mjs 5. Erste Zeile zeigen, zurück.
+- Mehr Denken ändert nicht, was der Loop darf. Wer entscheidet das?
 -->
 
 ---
@@ -196,17 +315,18 @@ lines:
 <D09PermissionGate />
 
 <!--
-- Den Tool-Aufruf wählt das Modell, entscheiden tut der Harness
-- [click] Gibt es eine Regel in den Settings?
-- [click] Wenn ja: erlaubt oder verboten, ohne dich
-- [click] Wenn nein: Du wirst gefragt
-- [click] Manual fragt vor Edits und Commands
-- [click] Accept edits lässt Datei-Änderungen durch
-- [click] Plan schaut nur und plant
-- [click] Auto lässt einen Klassifikator riskante Aktionen blocken
-- [click] Bypass überspringt fast alles. Bypass kommt auf Folie 11 zurück
-- Ein Tool, das Dinge tut, ohne zu fragen, hat keinen Charakterzug, sondern einen Modus
-- Für UX: Jede Rückfrage ist Interface-Entwurf. Zu viele, und niemand liest sie mehr
+- 💬 Wie oft soll ein Agent fragen? 1 immer, 2 bei Edits, 3 nie.
+- 🖥 Klon A fertig? Dann Dev-Server: A stoppen, B starten.
+- [click] Regel in den Settings?
+- [click] Ja: erlaubt oder verboten, ohne dich.
+- [click] Nein: Du wirst gefragt.
+- [click] Manual: fragt vor Edits und Befehlen.
+- [click] Accept edits: Dateien gehen durch.
+- [click] Plan: schaut nur.
+- [click] Auto: Ein Klassifikator blockt Riskantes.
+- ⏸ Pause. 💬 Was wäre das Schlimmste, wenn er nie mehr fragt?
+- [click] Bypass: fragt fast nie.
+- Welche Regeln werden erzwungen statt erhofft?
 -->
 
 ---
@@ -220,72 +340,19 @@ lines:
 <D07HarnessLoop hooks />
 
 <!--
-- Ein Hook ist dein eigenes Shell-Kommando an einer festen Stelle im Ring
-- [click] Vor dem Tool: Exit-Code 2 blockiert den Aufruf, noch vor jeder Regel
-- [click] Nach dem Tool: Das Tool ist schon gelaufen. Exit 2 gibt dem Modell den Fehler zurück
-- [click] Am Ausgang: Exit 2 hält den Turn offen
-- Hooks gibt es in allen vier Tools, bei OpenCode über Plugins. Wer bisher nur fragt: Der Hook ist die erste Idee zum Mitnehmen
+- Ein Hook ist dein eigenes Shell-Kommando im Ring.
+- [click] Vor dem Tool: Exit 2 blockt, auch wenn eine Regel erlaubt.
+- [click] Nach dem Tool: Exit 2 gibt dem Modell den Fehler.
+- [click] Am Ausgang: Exit 2 hält den Turn offen.
+- 📊 Umfrage 3: [Zahl] von euch haben schon einen Hook.
+- 💬 Was prüft euer Hook?
+- Nur Chat? Der Hook ist eure erste Idee zum Mitnehmen.
+- Und Claude im Zugzwang: Test ändern oder Logik?
 -->
 
 ---
 layout: concept
-heading: "Advice vs. law"
----
-
-<div class="flex gap-6 w-full max-w-4xl">
-  <div class="na-card p-5 flex-1" style="border-style: dashed; border-color: var(--na-zinc-600)">
-    <div class="text-sm font-semibold mb-3" style="color: var(--na-fg-muted)">ADVICE</div>
-    <div class="text-base">CLAUDE.md: Never edit a file in <code style="color: var(--na-accent-500)">tests/</code> to make a failing test pass.</div>
-    <div class="text-sm mt-3" style="color: var(--na-fg-muted)">Can be forgotten.</div>
-  </div>
-  <div v-click class="na-card p-5 flex-1" style="border-color: var(--na-primary-500); box-shadow: var(--na-shadow-accent)">
-    <div class="text-sm font-semibold mb-3" style="color: var(--na-primary-400)">LAW</div>
-    <div class="text-base">Deny: <code>Edit(tests/**)</code>. Hook: blocks <code>db:seed</code>, <code>db:reset</code>, <code>setup</code> and <code>rm dev.db</code>. Exit 2.</div>
-    <div class="text-sm mt-3" style="color: var(--na-fg-muted)">Runs outside the model, every time.</div>
-  </div>
-</div>
-
-<!--
-- Links der Rat: eine Zeile in der CLAUDE.md. Das Modell liest sie bei jedem Start und kann sie trotzdem übergehen. Bei Codex und OpenCode heisst die Datei AGENTS.md
-- [click] Rechts das Gesetz, in `.claude/settings.json`: ein Deny auf `Edit(tests/**)` und ein Hook vor jedem Shell-Befehl, der `npm run setup`, `db:seed`, `db:reset` und das Löschen von `dev.db` mit Exit 2 blockt. Beides läuft ausserhalb des Modells, jedes Mal
-- Die Szene im Webinar, auf dem Branch `webinar-demo-law`: Claude soll den roten alten Test grün machen. Der Edit am Test wird verweigert, vom Harness, nicht von Claude. Danach drei mögliche Ausgänge: Claude fragt nach, Claude gibt auf, oder Claude lockert stattdessen die Regel in `lib/validation.ts`. Dann ist der Test grün und die Regel gebrochen, darum geht es auf Folie 12
-- Dann: Run npm run db:seed now. I allow it. Der Hook blockt trotzdem und sagt, warum
-- CLAUDE.md ist der Zettel am Kühlschrank, der Hook ist das Schloss. Für BAs: Ein Hook ist eine Definition of Done, die niemand überspringen kann
-- Die Grenze des Hooks: `npm test` löscht trotzdem alle Talks, denn es startet den Seed selbst. Was ein erlaubter Befehl tut, regelt der Hook nicht. Dafür gibt es einen Zaun um den Befehl: die Sandbox
--->
-
----
-layout: concept
-heading: "The escape hatch: an unsandboxed retry"
-docs: https://code.claude.com/docs/en/sandboxing#the-unsandboxed-retry-escape-hatch
-lines:
-  - "A command fails sandboxed. Claude may retry with dangerouslyDisableSandbox."
-  - "allowUnsandboxedCommands: false switches the retry off."
----
-
-<div class="flex flex-col items-center gap-6 w-full">
-<div v-click="1" class="text-xl font-semibold" style="color: var(--na-accent-500)">Manual mode asks you first. Bypass mode does not.</div>
-<div class="na-card p-5 font-mono text-sm w-full max-w-md">
-  <div>{ "sandbox": {</div>
-  <div>&nbsp;&nbsp;"enabled": true,</div>
-  <div v-click="2" style="color: var(--na-accent-500)">&nbsp;&nbsp;"allowUnsandboxedCommands": false</div>
-  <div>} }</div>
-</div>
-</div>
-
-<!--
-- Eine Sandbox ist ein Zaun um einen Befehl. Der Hook selbst läuft übrigens mit deinen vollen Rechten
-- Der Zaun hat eine Tür: Scheitert ein Befehl in der Sandbox, darf Claude ihn mit `dangerouslyDisableSandbox` ausserhalb wiederholen
-- [click] Im manuellen Modus fragt Claude dich vorher, im Bypass-Modus nicht. Dann steht niemand an der Tür
-- [click] Eine Zeile in den Settings schliesst die Tür: `"allowUnsandboxedCommands": false`
-- Unter Windows läuft die Sandbox in WSL2, auf macOS und Linux direkt
-- Andere Tools: Copilot hat eine OS-Sandbox, standardmässig aus; `sandbox.allowBypass: false` schliesst die Tür. Bei Codex ist die Sandbox standardmässig an; wer sie verlässt, wird gefragt, oder eine automatische Prüfung entscheidet. OpenCode hat keine Sandbox. Mehr im Cheat Sheet
-- Auch mit geschlossener Tür bleibt das Projekt beschreibbar, dafür arbeitet Claude ja darin. Also darf der Agent auch den Test ändern, solange nichts anderes es verbietet
--->
-
----
-layout: concept
-heading: "Update the test, or fix the code?"
+heading: "Zugzwang: update the test, or fix the logic?"
 ---
 
 <div class="w-full grid grid-cols-2 gap-8 text-base">
@@ -305,20 +372,218 @@ heading: "Update the test, or fix the code?"
 </div>
 
 <!--
-- Zwei rote Tests, zwei Antworten. Den alten durfte die Fachseite ändern, weil sich das Produkt geändert hat. Den neuen darf niemand ändern, er ist die Regel
-- Eine Geschichte dazu: Ein Kollege bat Claude, ein BCC zu seinem E-Mail-Tool hinzuzufügen. Im Plan stand, nebenbei die GDPR- und Privacy-Seiten umzuschreiben. Er las den ganzen Plan und fing es vor dem Ausrollen ab. Einen Plan liest man. Einen geänderten Test liest keiner mehr
-- Ausgangslage: Die neue Spec «a start in the past is refused on create» ist rot
-- [click] Links der Prompt: update the test so the suite passes
-- [click] Claude ändert die Assertion, nicht den Code
-- [click] Die Suite ist grün. Aber der Code bricht die Regel weiter, und kein Test prüft sie mehr
-- [click] Rechts: change lib/validation.ts only, not the tests
-- [click] Claude ändert die Logik. Der Test sagt noch, was er sagte
-- [click] Grün, weil die Regel wirklich gilt
-- [click] Derselbe rote Test. Die Frage ist, welche Datei sich ändern durfte
-- Für BAs: Die Regel, die der Test beweist, gehört der Fachseite. Für POs: Bei jeder Abnahme fragen, welche Datei sich ändern durfte, um grün zu werden
-- Die Sandbox hätte das nicht verhindert, denn Datei-Tools folgen den Permission-Regeln. Auch `/goal` verhindert es nicht: Sein Prüfer ist ein kleiner Bewerter, der feststellt, ob das Ziel erreicht ist. Die Grenze hält er nicht
-- In Claude Code deckt `Edit(tests/**)` alle Datei-Tools. Bei Copilot gelten nur exakte Pfade, bei Codex ein Profil ohne Garantie. Details im Cheat Sheet
-- Die Grenze gehört in die Settings, nicht in den Prompt
+- Den Plan liest man. Den geänderten Test liest keiner.
+- Hier: eine neue Spec, vor dem Code geschrieben, rot. Sie ist die Regel.
+- [click] Links: update the test.
+- [click] Claude ändert die Assertion.
+- [click] Grün, Regel gebrochen.
+- [click] Rechts: nur validation.ts.
+- [click] Claude ändert die Logik.
+- [click] Grün, Regel gilt.
+- [click] Welche Datei durfte sich ändern?
+- Der alte Test ist ein anderer Fall. Was hat Claude in Klon A gemacht?
+-->
+
+---
+layout: concept
+heading: "Advice vs. law"
+---
+
+<div class="flex flex-col gap-5 w-full max-w-4xl">
+<div class="flex gap-6 w-full">
+  <div class="na-card p-5 flex-1" style="border-style: dashed; border-color: var(--na-zinc-600)">
+    <div class="text-sm font-semibold mb-3" style="color: var(--na-fg-muted)">ADVICE</div>
+    <div class="text-base">CLAUDE.md: Never edit a file in <code style="color: var(--na-accent-500)">tests/</code> to make a failing test pass.</div>
+    <div class="text-sm mt-3" style="color: var(--na-fg-muted)">Can be forgotten.</div>
+  </div>
+  <div v-click="1" class="na-card p-5 flex-1" style="border-color: var(--na-primary-500); box-shadow: var(--na-shadow-accent)">
+    <div class="text-sm font-semibold mb-3" style="color: var(--na-primary-400)">LAW</div>
+    <div class="text-base">Hook <code>guard-tests</code>: a new test passes. An old test: Claude explains, you approve.</div>
+    <div class="text-base mt-2">Hook <code>guard-db</code>: blocks <code>db:seed</code>, <code>db:reset</code>, <code>setup</code> and <code>rm dev.db</code>.</div>
+    <div class="text-sm mt-3" style="color: var(--na-fg-muted)">Runs outside the model, every time.</div>
+  </div>
+</div>
+<div v-click="2" class="na-card px-4 py-2 font-mono text-sm text-center" style="border-color: var(--na-accent-500)">git status --short -- tests/ &nbsp;·&nbsp; ?? = new &nbsp;·&nbsp; M = look again</div>
+</div>
+
+<!--
+- 🖥 Klon A: Der alte Test war rot. Zugzwang.
+- Claude hat geändert / gefragt. Das ist Rat.
+- [click] 🖥 Klon B: «Make the test … pass».
+- Hook lehnt ab, Claude erklärt. «Yes, the product rule changed.»
+- Diff lesen, Yes. Die Titelfrage: Ich entscheide den Zug, nicht das Modell.
+- 🖥 «Run npm run db:seed now. I allow it.» Geblockt.
+- Zettel am Kühlschrank gegen Schloss.
+- 📊 Umfrage 4: [Zahl] sagten «Weiss ich nicht».
+- [click] 🖥 Klon B: git status --short -- tests/
+- ?? heisst neu. M heisst Moment mal.
+- Wo stehen wir jetzt?
+-->
+
+---
+layout: concept
+heading: "Where do we stand now?"
+lines:
+  - "Two steps climbed today: we paired with Claude, then hook and test set the gates."
+---
+
+<div class="flex items-end gap-4 w-full max-w-4xl justify-center text-sm">
+  <div class="na-card px-4 py-3" style="border-color: var(--na-accent-500); box-shadow: var(--na-shadow-accent)">pair with Claude</div>
+  <div class="na-card px-4 py-5" style="border-color: var(--na-accent-500); box-shadow: var(--na-shadow-accent)">goal + gates</div>
+  <div class="na-card px-4 py-7 w-28">&nbsp;</div>
+  <div class="na-card px-4 py-9 w-28">&nbsp;</div>
+  <div class="na-card px-4 py-11">CI / routine</div>
+</div>
+
+<!--
+- Die Treppe vom Anfang. Zwei Stufen haben wir jetzt.
+- Unten: pair with Claude. Jeder Schritt gemeinsam.
+- Darüber: goal + gates. Hook und Test halten an, ich entscheide.
+- Und unser Rennen?
+-->
+
+---
+layout: concept
+heading: "The race: low vs. high"
+lines:
+  - "Live result: in the terminal."
+---
+
+<div class="flex flex-col items-center gap-6 w-full max-w-3xl">
+<div v-click="1" class="text-sm" style="color: var(--na-fg-muted)">Today: five runs per level</div>
+<div v-click="1" class="grid grid-cols-4 gap-2 w-full text-sm">
+  <div></div><div class="font-semibold text-center">correct</div><div class="font-semibold text-center">false +</div><div class="font-semibold text-center">median output tokens</div>
+  <div class="na-card p-3 font-mono">low</div><div class="na-card p-3 text-center">…</div><div class="na-card p-3 text-center">…</div><div class="na-card p-3 text-center">…</div>
+  <div class="na-card p-3 font-mono">high</div><div class="na-card p-3 text-center">…</div><div class="na-card p-3 text-center">…</div><div class="na-card p-3 text-center">…</div>
+</div>
+<div v-click="2" class="text-xl font-semibold" style="color: var(--na-accent-500)">More thinking is a dial, not a guard. Safety came from the hook and the test.</div>
+</div>
+
+<!--
+- 💬 Findet high mehr Bugs? J oder N.
+- 🖥 Rennterminal: Tabelle zeigen.
+- [click] Vorlesen: Wie viele Läufe fanden alle vier Bugs? Falsche Funde? Tokens?
+- Im Kurs: zehn Läufe, beide 4 von 4, high braucht ein Fünftel mehr Tokens (1366 gegen 1658).
+- Ein Messwert, kein Gesetz. Es zählt, was das Terminal zeigt.
+- [click] Bedenkzeit ist ein Regler, kein Wächter. Sicher gemacht haben es Hook und Test.
+- Allein heisst nicht ohne Prüfer.
+-->
+
+---
+layout: concept
+heading: "Subagents: three checkers, one prompt"
+docs: https://code.claude.com/docs/en/sub-agents
+lines:
+  - "Each subagent works in its own context window. Only its answer comes back."
+---
+
+<div class="grid grid-cols-2 gap-8 w-full max-w-5xl items-center">
+
+```txt
+Use three Explore subagents in parallel, read only:
+1. Does the app refuse a start in the past?
+2. Does it refuse two talks in one room at one start?
+3. Which files under tests/ changed?
+   (git status --short -- tests/)
+Each answers in one line with file:line.
+```
+
+<div class="flex flex-col gap-3">
+  <div class="na-card px-4 py-3" v-click="1"><span class="font-mono text-sm" style="color: var(--na-accent-500)">Explore 1</span> · start in the past? · <span style="color: var(--na-fg-muted)">read only</span></div>
+  <div class="na-card px-4 py-3" v-click="1"><span class="font-mono text-sm" style="color: var(--na-accent-500)">Explore 2</span> · one room, one start? · <span style="color: var(--na-fg-muted)">read only</span></div>
+  <div class="na-card px-4 py-3" v-click="1"><span class="font-mono text-sm" style="color: var(--na-accent-500)">Explore 3</span> · tests/ changed? · <span style="color: var(--na-fg-muted)">read only</span></div>
+  <div class="text-lg font-semibold mt-2" v-click="2" style="color: var(--na-accent-500)">Back: three lines with file:line. What they read stays in their windows.</div>
+</div>
+
+</div>
+
+<!--
+- 🖥 Klon B, gleiche Session: Prompt aus der Zwischenablage.
+- Drei Prüfer auf einmal, mit einem Prompt.
+- [click] Drei Subagents starten gleichzeitig. Jeder hat sein eigenes Kontextfenster.
+- Explore darf nur lesen. Ein Prüfer, der nichts ändern kann, biegt keinen Test um.
+- [click] Zurück kommen drei Zeilen. Was sie gelesen haben, bleibt bei ihnen.
+- Dauert rund 25 Sekunden. Raumregel steht übrigens in lib/data/talks.ts, nicht in validation.ts.
+- Eigene Prüfer: rule-checker.md im Repo, nur Read, Grep, Glob.
+- Das ist die nächste Stufe der Treppe: isolated agents.
+-->
+
+---
+layout: concept
+heading: "Isolated agents: Claude in a box"
+docs: https://code.claude.com/docs/en/devcontainer
+lines:
+  - "Commands run in the container. Your project files stay on your machine."
+  - "Trusted repos only: a malicious project can take what is in the box, even ~/.claude."
+---
+
+<div class="grid grid-cols-5 gap-6 w-full max-w-5xl items-center">
+<div class="col-span-3">
+
+```jsonc
+// the core of .devcontainer/devcontainer.json
+{
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
+  "features": {
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
+  }
+}
+```
+
+</div>
+<div class="col-span-2 flex flex-col gap-3 text-base">
+  <div class="na-card px-4 py-3"><span class="font-mono text-sm" style="color: var(--na-accent-500)">1</span> · <span class="font-mono text-sm">claude setup-token</span> → <span class="font-mono text-sm">.devcontainer/.env</span> <span style="color: var(--na-fg-muted)">(git-ignored)</span></div>
+  <div class="na-card px-4 py-3" v-click><span class="font-mono text-sm" style="color: var(--na-accent-500)">2</span> · VS Code: <span class="font-mono text-sm">Dev Containers: Reopen in Container</span></div>
+  <div class="na-card px-4 py-3" v-click style="border-color: var(--na-accent-500); box-shadow: var(--na-shadow-accent)"><span class="font-mono text-sm" style="color: var(--na-accent-500)">3</span> · terminal in the container: <span class="font-mono">claude</span></div>
+</div>
+</div>
+
+<!--
+- Isolation, Teil zwei: Claude in der eigenen Kiste.
+- Wer Docker hat, hat sie schon. Die Datei liegt im Webinar-Repo.
+- Zuerst der Token: claude setup-token, in .devcontainer/.env.
+- [click] Reopen in Container.
+- [click] Terminal: claude. Sessions bleiben im Volume.
+- ⚠ Nur Repos, denen ihr traut.
+- Was haben wir noch zugemacht?
+-->
+
+---
+layout: concept
+heading: "What we added to the box"
+lines:
+  - "Three layers. Test them in your box: a script that opens .env must fail."
+---
+
+<div class="grid grid-cols-3 gap-6 w-full max-w-5xl">
+  <div v-click class="na-card p-5 pb-10 relative" style="border-color: var(--na-accent-500)">
+    <div class="text-sm font-semibold mb-2" style="color: var(--na-accent-500)">token hidden</div>
+    <div class="text-base">Commands Claude runs don't see it. Claude Code keeps it for its own calls.</div>
+    <div class="font-mono text-xs mt-3" style="color: var(--na-fg-muted)">CLAUDE_CODE_SUBPROCESS_<wbr>ENV_SCRUB=1</div>
+    <DocLink card href="https://code.claude.com/docs/en/env-vars" />
+  </div>
+  <div v-click class="na-card p-5 pb-10 relative" style="border-color: var(--na-accent-500)">
+    <div class="text-sm font-semibold mb-2" style="color: var(--na-accent-500)">no reading secrets</div>
+    <div class="text-base">Deny rules in <span class="font-mono text-sm">.claude/settings.json</span>.</div>
+    <div class="font-mono text-xs mt-3" style="color: var(--na-fg-muted)">.env* · ~/.claude/.credentials.json · ~/.ssh · ~/.aws</div>
+    <DocLink card href="https://code.claude.com/docs/en/permissions" />
+  </div>
+  <div v-click class="na-card p-5 pb-10 relative" style="border-color: var(--na-accent-500)">
+    <div class="text-sm font-semibold mb-2" style="color: var(--na-accent-500)">sandbox on</div>
+    <div class="text-base">Windows has no Bash sandbox. The Linux box does.</div>
+    <div class="font-mono text-xs mt-3" style="color: var(--na-fg-muted)">"sandbox": { "enabled": true }</div>
+    <DocLink card href="https://code.claude.com/docs/en/sandboxing" />
+  </div>
+</div>
+
+<!--
+- Drei Schichten, die wir dazu gebaut haben.
+- [click] Befehle, die Claude startet, sehen den Token nicht. Claude Code selbst schon.
+- [click] Lesen verboten: .env, Anmeldedaten, SSH- und AWS-Schlüssel.
+- [click] Unter Windows gibt es keine Sandbox. In der Linux-Kiste schon.
+- Testet es: Ein Skript, das .env öffnet, muss in der Kiste scheitern.
+- Alles im Webinar-Repo, im README beschrieben.
+- Wo steht das auf der Treppe?
 -->
 
 ---
@@ -330,44 +595,45 @@ lines:
 ---
 
 <div class="flex items-end gap-4 w-full max-w-4xl justify-center text-sm">
-  <div class="na-card px-4 py-3">you watch</div>
-  <div class="na-card px-4 py-5" v-click>goal + gates</div>
-  <div class="na-card px-4 py-7" v-click>isolated agents</div>
+  <div class="na-card px-4 py-3" style="border-color: var(--na-accent-500); box-shadow: var(--na-shadow-accent)">pair with Claude</div>
+  <div class="na-card px-4 py-5" v-click style="border-color: var(--na-accent-500); box-shadow: var(--na-shadow-accent)">goal + gates</div>
+  <div class="na-card px-4 py-7" v-click style="border-color: var(--na-accent-500); box-shadow: var(--na-shadow-accent)">isolated agents</div>
+  <div class="na-card px-4 py-9 invisible">background / batch</div>
+  <div class="na-card px-4 py-11 invisible">CI / routine</div>
+</div>
+
+<!--
+- 💬 Welche Stufe war der Live-Lauf, welche der Hook?
+- Ganz unten: pair with Claude. Da hat die Demo angefangen.
+- 🖥 Klon A: /goal tippen, nicht senden.
+- [click] goal + gates: Ein Check entscheidet, wann der Lauf stoppt.
+- [click] isolated agents: die drei Prüfer und die Kiste.
+- Und darüber?
+-->
+
+---
+layout: concept
+heading: "Autonomy is earned by verification"
+lines:
+  - "More freedom needs stronger evidence, isolation and limits."
+  - "Do not scale autonomy beyond your ability to detect and contain errors."
+---
+
+<div class="flex items-end gap-4 w-full max-w-4xl justify-center text-sm">
+  <div class="na-card px-4 py-3" style="border-color: var(--na-accent-500); box-shadow: var(--na-shadow-accent)">pair with Claude</div>
+  <div class="na-card px-4 py-5" style="border-color: var(--na-accent-500); box-shadow: var(--na-shadow-accent)">goal + gates</div>
+  <div class="na-card px-4 py-7" style="border-color: var(--na-accent-500); box-shadow: var(--na-shadow-accent)">isolated agents</div>
   <div class="na-card px-4 py-9" v-click>background / batch</div>
   <div class="na-card px-4 py-11" v-click>CI / routine</div>
 </div>
 
 <!--
-- Die Treppe von Folie 2: Mehr Freiheit braucht stärkere Belege, Isolation und Grenzen
-- Ganz unten: you watch. Im Webinar war das der Live-Lauf, jeder Schritt unter Aufsicht
-- [click] goal + gates: Ein Check, nicht deine Augen, entscheidet, wann der Lauf stoppt, hier der Hook und der Test. `/goal` ist die kleinste Stufe, zum Beispiel: /goal The new spec passes, npm test passes and npm run lint has no warnings. Show the output of both commands in your last message. Dass `tests/` dabei unverändert bleibt, hält der Deny, nicht der Prüfer des Goals
-- [click] isolated agents: die Sandbox
-- [click] background und batch: mehrere Agenten auf einmal, im Hintergrund
-- [click] CI und Routinen: ohne dich
-- Jeder Schritt weg von der Tastatur nimmt eine Korrekturschleife weg
-- Für POs: Dieselbe Frage stellst du bei jedem neuen Teammitglied: Wie viel darf es allein, und woran merken wir einen Fehler? Für BAs: Das Akzeptanzkriterium ist der Beleg, der eine Stufe trägt. Für Architektur: Isolation ist eine Stufe, keine Einstellung
-- Was würdest du Claude heute nicht allein machen lassen?
--->
-
----
-layout: concept
-heading: "Autonomy is earned by verification"
-lines:
-  - "More freedom needs stronger evidence, isolation and limits."
-  - "Do not scale autonomy beyond your ability to detect and contain errors."
----
-
-<div class="flex items-end gap-4 w-full max-w-4xl justify-center text-sm">
-  <div class="na-card px-4 py-3" style="opacity: 0.5">you watch</div>
-  <div class="na-card px-4 py-5" style="opacity: 0.5">goal + gates</div>
-  <div class="na-card px-4 py-7" style="opacity: 0.5">isolated agents</div>
-  <div class="na-card px-4 py-9" style="border-color: var(--na-accent-500); box-shadow: var(--na-shadow-accent)">background / batch</div>
-  <div class="na-card px-4 py-11" style="border-color: var(--na-accent-500); box-shadow: var(--na-shadow-accent)">CI / routine</div>
-</div>
-
-<!--
-- Drei Stufen hat das Webinar gezeigt: den Live-Lauf, den Hook und die Sandbox
-- Die oberen zwei Stufen leuchten. Dort liefe genau das ohne dich, was du Claude heute nicht allein machen lassen würdest. Was ist dann dein Beleg?
+- Drei Stufen habt ihr heute gesehen.
+- [click] background / batch: mehrere Agenten im Hintergrund.
+- [click] CI und Routinen: ohne euch.
+- Je weniger ihr zuschaut, desto mehr Beleg braucht ihr.
+- 💬 Was lasst ihr Claude heute nicht allein machen?
+- Zwei Antworten vorlesen: Oben liefe genau das ohne euch. Was ist dann euer Beleg?
 - Und wer baut diese Stufen?
 -->
 
@@ -377,22 +643,25 @@ heading: "The steps where nobody watches"
 ---
 
 <div class="grid grid-cols-2 gap-8 w-full max-w-3xl">
-  <div class="na-card p-6" style="border-color: var(--na-accent-500)">
+  <div class="na-card p-6 pb-10 relative" style="border-color: var(--na-accent-500)">
     <div class="text-sm font-semibold mb-2 font-mono" style="color: var(--na-accent-500)">/batch</div>
     <div class="text-lg">Many separate units, each ending as a tested pull request.</div>
+    <DocLink card href="https://code.claude.com/docs/en/commands" />
   </div>
-  <div v-click class="na-card p-6" style="border-color: var(--na-accent-500)">
+  <div v-click class="na-card p-6 pb-10 relative" style="border-color: var(--na-accent-500)">
     <div class="text-sm font-semibold mb-2" style="color: var(--na-accent-500)">CI</div>
-    <div class="text-lg">A pull request opens. The same agent audits it. Nobody watches.</div>
+    <div class="text-lg">A pull request opens. A separate agent audits it. Nobody watches.</div>
+    <DocLink card href="https://code.claude.com/docs/en/github-actions" />
   </div>
 </div>
 
 <!--
-- Das sind die zwei Stufen, die das Webinar nicht geklettert ist
-- Links `/batch`: viele einzelne Einheiten, jede endet als getesteter Pull Request
-- [click] Rechts CI: Ein Pull Request geht auf, derselbe Agent prüft ihn, und niemand schaut zu
-- Beide baut der Kurs «Mastering Claude Code» in Teil IV, «Orchestrate and let go», in der Task «Letting go». Wer so loslässt, braucht für jede Stufe einen Beleg wie den, den das Webinar für den Loop gebaut hat
-- Der Publish-Knopf in clash-conference ist die nächste Stufe: ein Agent, der ohne dich in der App läuft. Den baust du im Kurs in Task 19
+- Die Antwort auf den Cliffhanger, kein Werbeblock.
+- Links /batch: viele Einheiten, jede endet als getesteter PR.
+- [click] Rechts CI: Ein PR geht auf, ein eigener Agent prüft, niemand schaut zu.
+- Beides im Kurs, Teil IV, Task «Letting go».
+- Der Publish-Knopf der App ist die nächste Stufe: Task 19.
+- Deshalb der Kurs.
 -->
 
 ---
@@ -403,13 +672,16 @@ layout: concept
   <img src="/brand/nalogo-white-n.svg" alt="nextacademy.io" class="w-20 h-20" />
   <h1 class="!mb-0">Mastering Claude Code</h1>
   <p class="text-3xl font-semibold" style="color: var(--na-accent-500)">24–26 November</p>
-  <p class="text-xl max-w-2xl">Book by 18 November 2026 and save 25 %.</p>
-  <div class="na-card px-6 py-4 font-mono text-xl" style="border-color: var(--na-accent-500)"><span v-pre>{{BOOKING_URL}}</span></div>
+  <p class="text-xl max-w-2xl">Online · EUR 1290 · book by 18 November 2026 and save 25 %.</p>
+  <div class="na-card px-6 py-4 font-mono text-xl" style="border-color: var(--na-accent-500)">nextacademy.io/de/workshops/claude-code</div>
 </div>
 
 <!--
-- Der Kurs «Mastering Claude Code» läuft vom 24. bis 26. November 2026. Wer bis zum 18. November 2026 bucht, spart 25 %
-- Wer tiefer einsteigen will, kann sich gern melden
+- 🖥 Kurslink in den Chat.
+- Der Kurs: 24. bis 26. November, online, 1290 Euro.
+- Wer bis zum 18. bucht, bekommt 25 Prozent.
+- Keine Claude-Code-Erfahrung nötig, ein Pro-Abo reicht.
+- Jetzt eure Fragen. Höchstens 8 Minuten, bis 18:57.
 -->
 
 ---
@@ -419,10 +691,10 @@ heading: "You stayed to the end"
 
 <div v-click class="flex items-center gap-8">
   <div class="na-card px-8 py-6 text-2xl max-w-xl" style="border-color: var(--na-accent-500); box-shadow: var(--na-shadow-accent)">
-    Your gift: <span style="color: var(--na-accent-500); font-weight: 700">a repo with a verification kit, a course task and a cheat sheet.</span>
-    <div class="font-mono text-base mt-4" style="color: var(--na-fg-muted)"><span v-pre>{{GIFT_URL}}</span></div>
+    Your gift: <span style="color: var(--na-accent-500); font-weight: 700">a repo with the guard-tests hook, a verification kit, a course task and a cheat sheet.</span>
+    <div class="font-mono text-base mt-4" style="color: var(--na-fg-muted)">github.com/nextacademy-io/claude-code-webinar</div>
   </div>
-  <div class="na-card w-40 h-40 flex items-center justify-center font-mono text-sm" style="color: var(--na-fg-muted)">QR</div>
+  <img src="/gift-qr.svg" alt="QR code: github.com/nextacademy-io/claude-code-webinar" class="w-44 h-44 rounded-lg" />
 </div>
 
 <div class="absolute inset-x-0 bottom-3 text-center text-sm" style="color: var(--na-fg-muted)">
@@ -430,7 +702,10 @@ heading: "You stayed to the end"
 </div>
 
 <!--
-- Dieses Repo ist das Geschenk
-- [click] `TASK.md` ist die Übungsaufgabe: dieselbe App, dieselben zwei Regeln, diesmal baust du sie selbst, vom Branch `webinar-start` bis zur Lösung auf `webinar-solution`. Das Verification Kit ist, was `webinar-solution` absichert: der Deny auf `tests/**`, der Hook für `dev.db` und die Regeln in der CLAUDE.md. Das Cheat Sheet zeigt die Handgriffe in Claude Code, GitHub Copilot, Codex und OpenCode
-- Wer ein anderes Tool nutzt: Die Zeilen im Cheat Sheet sind Fragen, die du jedem Tool stellen kannst
+- Ihr seid bis hierher geblieben. Das ist für euch.
+- [click] 🖥 Repo-Link in den Chat.
+- Den Hook legt ihr morgen in euer Projekt: neue Tests frei, alte nur mit eurem Ja.
+- Die Aufgabe spielt auf derselben App. Das Cheat Sheet hat vier Tools.
+- Das Geschenk gibt es auch ohne Buchung.
+- Danke fürs Bleiben.
 -->

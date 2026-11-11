@@ -10,7 +10,7 @@ const modes = [
   { key: 'accept', label: 'accept edits', meaning: 'file edits pass, most commands ask' },
   { key: 'plan', label: 'plan', meaning: 'looks, plans, edits no code' },
   { key: 'auto', label: 'auto', meaning: 'a classifier blocks the risky actions instead of asking' },
-  { key: 'bypass', label: 'bypass', meaning: 'rarely asks — sandbox only' },
+  { key: 'bypass', label: 'bypass', meaning: 'rarely asks — containers and VMs only' },
 ]
 </script>
 
@@ -70,7 +70,8 @@ const modes = [
       <rect :x="2 + i * 170" y="216" width="158" height="36" rx="18" fill="var(--na-bg-raised)" stroke="var(--na-zinc-600)" stroke-width="1.5" />
       <g v-click="4 + i"><rect :x="2 + i * 170" y="216" width="158" height="36" rx="18" fill="var(--na-primary-900)" stroke="var(--na-accent-500)" stroke-width="2.5" /></g>
       <text :x="81 + i * 170" y="240" text-anchor="middle" fill="var(--na-fg)" font-weight="600" style="font-size: 16px">{{ m.label }}</text>
-      <text v-click="[4 + i, 5 + i]" x="2" y="280" fill="var(--na-accent-400)" style="font-size: 16px">{{ m.label }}: {{ m.meaning }}</text>
+      <!-- each meaning gives way to the next; the last stays, so no extra click -->
+      <text v-click="i < modes.length - 1 ? [4 + i, 5 + i] : 4 + i" x="2" y="280" fill="var(--na-accent-400)" style="font-size: 16px">{{ m.label }}: {{ m.meaning }}</text>
     </g>
   </svg>
 </template>

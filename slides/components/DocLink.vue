@@ -3,13 +3,15 @@
 // in the same spot on every slide — not bottom-left, where Slidev's navigation bar pops
 // up on hover. The concept, code-live and section layouts render it from a slide's `docs:`
 // frontmatter field — it never goes in a slide body, where it would make a text-only
-// concept slide count as having a graphic. One per slide, official docs only.
+// concept slide count as having a graphic. Official docs only.
+// With `card`, it sits bottom-right inside a card (the card needs `relative`), for a
+// slide that compares two things with a docs page each.
 // A real <a href>, so it works in the HTML deck and in the exported PDF.
-defineProps<{ href: string }>()
+defineProps<{ href: string; card?: boolean }>()
 </script>
 
 <template>
-  <a :href="href" target="_blank" rel="noopener" class="na-doclink" :title="href">
+  <a :href="href" target="_blank" rel="noopener" class="na-doclink" :class="{ 'na-doclink--card': card }" :title="href">
     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 0 0-7.07-7.07l-1.5 1.5" />
       <path d="M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 0 0 7.07 7.07l1.5-1.5" />
@@ -35,6 +37,10 @@ defineProps<{ href: string }>()
   opacity: 0.8;
   text-decoration: none;
   transition: opacity 0.15s, color 0.15s;
+}
+.na-doclink--card {
+  right: 1rem;
+  bottom: 0.75rem;
 }
 .na-doclink:hover {
   opacity: 1;

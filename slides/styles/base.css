@@ -18,6 +18,9 @@
 .slidev-layout h1 { font-size: 2.75rem; line-height: 1.1; }
 .slidev-layout h2 { font-size: 2rem; line-height: 1.2; }
 
+/* poll slides: a smaller question, so the slide does not shout */
+.slidev-layout.na-poll h1 { font-size: 2rem; }
+
 .slidev-layout .accent { color: var(--na-accent-current); }
 
 .slidev-layout code,
