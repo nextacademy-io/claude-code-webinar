@@ -21,8 +21,10 @@
     // the commands Claude runs don't see the token; Claude Code keeps it for its own calls
     "CLAUDE_CODE_SUBPROCESS_ENV_SCRUB": "1"
   },
-  // the named volume is created root-owned; hand it to node so sessions and sign-in can be saved
-  "postStartCommand": "sudo chown -R node:node /home/node/.claude",
-  "postCreateCommand": "npm --prefix slides install",
+  // the Bash sandbox needs bubblewrap and socat on Linux; without them commands run unsandboxed
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y bubblewrap socat && npm --prefix slides install",
+  // the named volume is created root-owned; hand it to node so sessions and sign-in can be saved,
+  // then merge the nested-sandbox key into the container user's settings (never into the repo's)
+  "postStartCommand": "sudo chown -R node:node /home/node/.claude && node .devcontainer/user-settings.js",
   "forwardPorts": [3030]
 }

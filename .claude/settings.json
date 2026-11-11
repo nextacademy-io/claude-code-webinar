@@ -1,7 +1,6 @@
 {
   "sandbox": {
-    "enabled": true,
-    "enableWeakerNestedSandbox": true
+    "enabled": true
   },
   "permissions": {
     "deny": [
@@ -11,7 +10,6 @@
       "Read(~/.aws/**)"
     ],
     "ask": [
-      "WebFetch",
       "WebSearch",
       "Edit(.devcontainer/**)",
       "Edit(.claude/**)",

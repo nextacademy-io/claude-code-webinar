@@ -38,7 +38,7 @@ The deck opens at `http://localhost:3030`. Notes: `http://localhost:3030/present
 
 ## Claude in a box
 
-You need Docker and VS Code with the
+You need Docker, Node.js on your machine, and VS Code with the
 [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers).
 
 1. Clone this repo and open it in VS Code.
@@ -57,7 +57,9 @@ Three layers keep secrets from the commands Claude runs:
 - `.claude/settings.json` denies Claude reading `.env*`, `~/.claude/.credentials.json`, `~/.ssh` and
   `~/.aws`.
 - The same file turns on the Bash sandbox. Windows has none; inside the Linux container it applies
-  the deny rules to scripts too. On Linux it needs `bubblewrap` and `socat`; check with `/sandbox`.
+  the deny rules to scripts too. The container installs `bubblewrap` and `socat`, which the sandbox
+  needs on Linux, and sets `enableWeakerNestedSandbox` in its own user settings, not in the repo.
+  Check with `/sandbox`: its Dependencies tab must not list either package.
 
 Test it in the container: ask Claude to run a script that opens `.devcontainer/.env`. It must fail.
 
