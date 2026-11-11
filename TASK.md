@@ -4,9 +4,9 @@
 
 ## You will end up with
 
-A talk can no longer start in the past, and no two talks share a room and a start. Claude cannot
-edit your tests, and cannot run the seed or the reset on its own. `npm test` still reseeds the
-database, by design.
+A talk can no longer start in the past, and no two talks share a room and a start. Claude writes
+new tests freely, but changes a committed test only after it explained why and you said yes. It
+cannot run the seed or the reset on its own. `npm test` still reseeds the database, by design.
 
 ## Do this
 
@@ -45,15 +45,21 @@ database, by design.
 
    Nine specs: five red, four already pass.
 
-5. **Lock the tests.** Add `"permissions": { "deny": ["Edit(tests/**)"] }` to `.claude/settings.json`,
-   or use `/permissions`. Ask Claude to change a spec: the edit is denied.
+5. **Guard the tests.** Commit the nine specs. Copy the hook from this repo into clash-conference:
+   `guard-tests/guard-tests.mjs` to `.claude/hooks/`, and merge `guard-tests/settings.json` into
+   `.claude/settings.json`. Restart the session: `/exit`, `claude --continue`. Ask Claude to change
+   one of the committed specs: the hook refuses first, Claude has to tell you which test and why,
+   and after your yes you get the prompt with the diff. A new spec file still goes through.
 
 6. **Implement.**
-   > Make both rules pass. Validation messages live in lib/validation.ts, the room check goes through
-   > lib/data/talks.ts, and the Server Action returns it as a field error. Run npm test.
+   > Make tests/talk-rules.spec.ts pass. Validation messages live in lib/validation.ts, the room
+   > check goes through lib/data/talks.ts, and the Server Action returns it as a field error. Run
+   > npm test.
 
-   One old test now fails: `a start in the past is accepted`. Claude cannot edit it and should stop
-   and ask. The rule changed the product, so you change that test, by hand.
+   The new specs pass, but an old test in another file now fails: `a start in the past is accepted`
+   in `tests/talks.spec.ts`. Nobody told Claude about it. Claude is in Zugzwang: change the logic,
+   change the test, or ask. The hook refuses the first edit, so Claude has to stop and
+   explain. The rule changed the product: say yes, and approve the diff.
 
 7. **Guard the database.** `git checkout origin/webinar-solution -- .claude/hooks .claude/settings.json`,
    then restart the session: `/exit`, `claude --continue`. Send:
@@ -62,20 +68,21 @@ database, by design.
    The hook blocks it and says why, even though you allowed it.
 
 8. **Let go.** Pick a third rule of your own (for example a title of at most 80 characters).
-   Write its spec yourself, by hand: the deny rule keeps Claude out of `tests/`. Run it, see it fail,
+   Let Claude write its spec: a new test file, so the hook lets it through. Run it, see it fail,
    commit it. Then hand over the work:
    > /goal The new spec passes, npm test passes and npm run lint has no warnings. Show the output of both commands in your last message.
 
    Claude builds the rule and runs until the suite is green. The goal is judged from what the chat
-   shows, so the proof has to be in the chat. What the goal does not hold is the boundary "nothing
-   under `tests/` changes": the deny rule from step 5 holds that, not the goal.
+   shows, so the proof has to be in the chat. What the goal does not hold is the boundary "no
+   committed test changes without you": the hook from step 5 holds that, not the goal. If Claude
+   wants to change one, the run stops and asks you.
 
 ## Check
 
 - `npm test` green.
-- `git status --short tests/` is empty: Claude changed nothing under `tests/`. `git log --stat -- tests/`
-  shows your own commits there.
-- `npm run db:seed` through Claude is blocked. An edit under `tests/` through Claude's edit tool is denied.
+- `git status --short -- tests/`: `??` for new specs, `M` only for the old test you said yes to.
+- `npm run db:seed` through Claude is blocked. A change to a committed test is refused first, then
+  asked.
 
 ## Stuck?
 
