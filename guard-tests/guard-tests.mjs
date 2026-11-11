@@ -35,16 +35,27 @@ const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const dirNames = TEST_DIRS.map((d) => escape(d.replace(/\/$/, "")));
 
 // A test folder named in a command: "tests/x", "./tests/x", "tests\x", "C:\app\tests\x",
-// and the folder alone, as in "cd tests && ...".
+// ">tests/x", and the folder alone, as in "cd tests && ...".
 const mentionsTestDir = new RegExp(
-  `(^|[\\s"'=(:\\\\/])(${dirNames.join("|")})([\\\\/\\s"';&|)]|$)`,
+  `(^|[\\s"'=(:>|\\\\/])(${dirNames.join("|")})([\\\\/\\s"';&|)]|$)`,
   "i",
 );
 
+// Changing into a test folder: "cd tests", "cd -- tests", "pushd ./tests",
+// "Set-Location -Path tests", "Push-Location tests".
+const entersTestDir = new RegExp(
+  `\\b(cd|pushd|chdir|sl|Set-Location|Push-Location)\\s+(--?\\w*\\s+)*["']?[^\\s"';&|]*\\b(${dirNames.join("|")})\\b`,
+  "i",
+);
+
+// A redirect into a file: "> x", ">> x" and ">| x", but not "2>&1", ">&2",
+// "> /dev/null" or "> $null".
+const redirectsToFile = />>?\|?(?!\s*(&|\/dev\/null|\$null|nul\b))\s*["']?[^\s>]/i;
+
 // Commands that write, move or delete files.
 const writesFiles = [
-  new RegExp(`>>?\\s*["']?[^\\s"'|;&]*(${dirNames.join("|")})[\\\\/]`, "i"), // redirect into a test folder
-  /\bsed\b[^|;&]*\s-i/,
+  new RegExp(`>>?\\|?\\s*["']?[^\\s"'|;&]*(${dirNames.join("|")})[\\\\/]`, "i"), // redirect into a test folder
+  /\bsed\b[^|;&]*\s(-[a-zA-Z]*i|--in-place)/, // -i, -Ei, -i.bak, --in-place
   /\bperl\b[^|;&]*\s-[a-z]*i/,
   /\b(tee|mv|cp|rm|rmdir|touch|truncate|unlink|del|erase|move|copy|ren)\b/i,
   /\bgit\s+(checkout|restore|rm|mv|apply)\b/i,
@@ -77,8 +88,12 @@ function gitStatus(root, rel) {
 function firstAttempt(sessionId, rel) {
   const marker = path.join(STATE_DIR, createHash("sha256").update(`${sessionId}\n${rel}`).digest("hex"));
   if (existsSync(marker)) return false;
-  mkdirSync(STATE_DIR, { recursive: true });
-  writeFileSync(marker, "");
+  try {
+    mkdirSync(STATE_DIR, { recursive: true });
+    writeFileSync(marker, "");
+  } catch {
+    decide("ask", `${rel} is a committed test. The hook could not write its marker in ${STATE_DIR}.`);
+  }
   return true;
 }
 
@@ -104,14 +119,28 @@ function checkFile(root, file, sessionId) {
   decide("ask", `${rel} is a committed test.`);
 }
 
-function checkCommand(command) {
-  if (!mentionsTestDir.test(command)) return;
-  if (!writesFiles.some((pattern) => pattern.test(command))) return;
+// True if the path is a test folder or lies inside one.
+function isInTestDir(root, target) {
+  const rel = `${toSlash(path.relative(root, path.resolve(root, target)))}/`.toLowerCase();
+  return TEST_DIRS.some((dir) => rel.startsWith(dir.toLowerCase()));
+}
+
+function checkCommand(command, root, cwd) {
+  // A working directory inside a test folder counts like naming the folder.
+  const startsInside = Boolean(cwd) && isInTestDir(root, cwd);
+  if (!startsInside && !mentionsTestDir.test(command)) return;
+  const writes =
+    writesFiles.some((pattern) => pattern.test(command)) ||
+    ((startsInside || entersTestDir.test(command)) && redirectsToFile.test(command));
+  if (!writes) return;
   block(
     `Blocked: this command writes under ${TEST_DIRS.join(", ")}. ` +
       "Use the Write tool for a new test and the Edit tool for a committed one, so the user can review changes to old tests.",
   );
 }
+
+// Last resort: an unexpected error blocks the call (exit 1 would let it through).
+process.on("uncaughtException", (error) => block(`Blocked: guard-tests failed: ${error.message}`));
 
 let raw = "";
 process.stdin.on("data", (chunk) => (raw += chunk));
@@ -129,7 +158,7 @@ process.stdin.on("end", () => {
     const file = input.tool_input?.file_path ?? input.tool_input?.notebook_path ?? "";
     if (file) checkFile(root, file, input.session_id);
   } else if (SHELL_TOOLS.has(tool)) {
-    checkCommand(input.tool_input?.command ?? "");
+    checkCommand(input.tool_input?.command ?? "", root, input.cwd);
   }
   process.exit(0);
 });

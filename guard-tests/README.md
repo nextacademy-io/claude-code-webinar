@@ -52,8 +52,9 @@ git status --short -- tests/
 - Tested on Windows, with the Bash and the PowerShell tool.
 - A script that writes files on its own, such as `node -e` or `python -c`,
   is not seen by the hook. `git status` sees it.
-- The shell check is strict on purpose: a command that names `tests` and
-  writes, moves or deletes files is blocked, also after `cd tests`.
+- The shell check is strict on purpose: a command that names `tests`, or
+  runs inside it, and writes, moves or deletes files is blocked, also after
+  `cd tests`.
 - The hook remembers per session and file that Claude was told, in a small
   marker in your temp folder (`GUARD_TESTS_STATE_DIR` to move it).
 - The prompt offers only Yes or No, no "don't ask again": every change to an

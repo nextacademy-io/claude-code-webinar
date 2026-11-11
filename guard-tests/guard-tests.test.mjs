@@ -42,10 +42,10 @@ after(() => {
   rmSync(stateDir, { recursive: true, force: true });
 });
 
-function run(input, cwd = project) {
+function run(input, cwd = project, state = stateDir) {
   const result = spawnSync(process.execPath, [HOOK], {
     input: typeof input === "string" ? input : JSON.stringify(input),
-    env: { ...process.env, CLAUDE_PROJECT_DIR: cwd, GUARD_TESTS_STATE_DIR: stateDir },
+    env: { ...process.env, CLAUDE_PROJECT_DIR: cwd, GUARD_TESTS_STATE_DIR: state },
     encoding: "utf8",
   });
   const output = result.stdout ? JSON.parse(result.stdout).hookSpecificOutput : {};
@@ -98,7 +98,8 @@ test("Write over a committed test asks", () => {
   assert.equal(run(write(path.join(project, "tests", "talks.spec.ts"))).decision, "ask");
 });
 
-test("a Windows path with backslashes is recognised", () => {
+// On Linux and macOS a backslash is an ordinary character, not a separator.
+test("a Windows path with backslashes is recognised", { skip: process.platform !== "win32" && "Windows paths only" }, () => {
   const file = `${project.replace(/\//g, "\\")}\\tests\\talks.spec.ts`;
   assert.equal(run(edit(file)).decision, "ask");
 });
@@ -141,6 +142,18 @@ for (const [tool, command] of [
   ["PowerShell", "'// x' | Out-File -FilePath tests/talks.spec.ts"],
   ["Bash", "cd tests && sed -i 's/accepted/refused/' talks.spec.ts"],
   ["PowerShell", "Set-Location tests; Set-Content talks.spec.ts '// x'"],
+  ["Bash", "cd tests && printf x > talks.spec.ts"],
+  ["Bash", "sed -Ei 's/a/b/' tests/talks.spec.ts"],
+  ["Bash", "sed --in-place 's/a/b/' tests/talks.spec.ts"],
+  ["Bash", "cd -- tests && printf x > talks.spec.ts"],
+  ["Bash", "printf x >| tests/talks.spec.ts"],
+  ["Bash", "printf x >tests/talks.spec.ts"],
+  ["Bash", "printf x >>tests/talks.spec.ts"],
+  ["Bash", "printf x >|tests/talks.spec.ts"],
+  ["Bash", "printf x 2>tests/talks.spec.ts"],
+  ["PowerShell", "Set-Location -Path tests; 'x' > talks.spec.ts"],
+  ["PowerShell", "Set-Location -LiteralPath tests; 'x' > talks.spec.ts"],
+  ["PowerShell", "Push-Location tests; 'x' > talks.spec.ts"],
 ]) {
   test(`${tool} blocks: ${command}`, () => {
     const r = run(shell(tool, command));
@@ -160,6 +173,12 @@ for (const [tool, command] of [
   ["Bash", "cat tests/talks.spec.ts"],
   ["PowerShell", "Get-Content tests\\talks.spec.ts"],
   ["Bash", "echo done > notes.txt"],
+  ["Bash", "cd tests && npx playwright test talks.spec.ts 2>&1"],
+  ["Bash", "cd tests && npx playwright test talks.spec.ts > /dev/null"],
+  ["Bash", "npx playwright test tests/talk-rules.spec.ts 2>&1 | tail"],
+  ["Bash", 'git add tests/talk-rules.spec.ts && git commit -m "add talk rule specs"'],
+  ["PowerShell", "cd tests; npx playwright test 2>$null"],
+  ["PowerShell", "Set-Location -Path tests; npx playwright test *> $null"],
 ]) {
   test(`${tool} passes: ${command}`, () => {
     const r = run(shell(tool, command));
@@ -168,7 +187,41 @@ for (const [tool, command] of [
   });
 }
 
+// A working directory inside tests/ counts like naming the folder
+
+const inTests = (command) => ({ ...shell("Bash", command), cwd: path.join(project, "tests") });
+
+test("a shell write with the working directory inside tests/ is blocked", () => {
+  const r = run(inTests("sed -i 's/a/b/' talks.spec.ts"));
+  assert.equal(r.code, 2);
+  assert.match(r.stderr, /Blocked/);
+});
+
+test("a redirect with the working directory inside tests/ is blocked", () => {
+  assert.equal(run(inTests("printf x > talks.spec.ts")).code, 2);
+});
+
+test("running tests with the working directory inside tests/ passes", () => {
+  const r = run(inTests("npx playwright test talks.spec.ts 2>&1"));
+  assert.equal(r.code, 0);
+  assert.equal(r.decision, null);
+});
+
 // When the hook cannot check, it does not let the call through
+
+test("when the session marker cannot be written it asks", () => {
+  const blocker = path.join(stateDir, "a-file");
+  writeFileSync(blocker, "");
+  const r = run(edit(path.join(project, "tests", "talks.spec.ts"), "session-c"), project, path.join(blocker, "sub"));
+  assert.equal(r.code, 0);
+  assert.equal(r.decision, "ask");
+});
+
+test("an unexpected error inside the hook is blocked", () => {
+  const r = run("null");
+  assert.equal(r.code, 2);
+  assert.match(r.stderr, /Blocked/);
+});
 
 test("outside a git repository it asks", () => {
   const plain = mkdtempSync(path.join(tmpdir(), "guard-tests-nogit-"));
