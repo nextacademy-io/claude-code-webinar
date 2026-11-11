@@ -38,7 +38,9 @@ const arc = (a: number, b: number) => {
   const s = pt(a + trim), e = pt(b - trim)
   return `M ${s.x} ${s.y} A ${RX} ${RY} 0 0 1 ${e.x} ${e.y}`
 }
-const lit = (n: number) => (props.hooks || props.btw ? false : n)
+// the station highlights belong to the plain loop slide only; on the hooks and
+// btw slides they are not rendered at all (v-click="false" would show them)
+const lit = !(props.hooks || props.btw)
 </script>
 
 <template>
@@ -77,7 +79,7 @@ const lit = (n: number) => (props.hooks || props.btw ? false : n)
       <line x1="70" y1="76.5" x2="108" y2="76.5" stroke="var(--na-zinc-400)" stroke-width="2.5" :marker-end="marker('arrow')" />
       <text x="89" y="48" text-anchor="middle" fill="var(--na-fg-muted)" style="font-size: 15px">message</text>
       <rect x="110" y="56.5" width="130" height="40" rx="8" fill="var(--na-bg-raised)" stroke="var(--na-zinc-600)" stroke-width="2" />
-      <g v-click="lit(1)"><rect x="110" y="56.5" width="130" height="40" rx="8" fill="var(--na-primary-900)" stroke="var(--na-accent-500)" stroke-width="2.5" /></g>
+      <g v-if="lit" v-click="1"><rect x="110" y="56.5" width="130" height="40" rx="8" fill="var(--na-primary-900)" stroke="var(--na-accent-500)" stroke-width="2.5" /></g>
       <text x="175" y="82" text-anchor="middle" fill="var(--na-fg)" font-weight="600" style="font-size: 16px">build prompt</text>
       <line x1="242" y1="76.5" x2="273" y2="76.5" stroke="var(--na-zinc-400)" stroke-width="2.5" :marker-end="marker('arrow')" />
     </g>
@@ -85,7 +87,7 @@ const lit = (n: number) => (props.hooks || props.btw ? false : n)
     <!-- stations -->
     <g v-for="s in stations" :key="s.key">
       <rect :x="pt(s.deg).x - 75" :y="pt(s.deg).y - 20" width="150" height="40" rx="8" fill="var(--na-bg-raised)" stroke="var(--na-zinc-600)" stroke-width="2" />
-      <g v-click="lit(s.click)">
+      <g v-if="lit" v-click="s.click">
         <rect :x="pt(s.deg).x - 75" :y="pt(s.deg).y - 20" width="150" height="40" rx="8" fill="var(--na-primary-900)" stroke="var(--na-accent-500)" stroke-width="2.5" />
       </g>
       <text :x="pt(s.deg).x" :y="pt(s.deg).y + 6" text-anchor="middle" fill="var(--na-fg)" font-weight="600" style="font-size: 16px">{{ s.label }}</text>
@@ -97,7 +99,7 @@ const lit = (n: number) => (props.hooks || props.btw ? false : n)
     <text :x="CX" :y="CY + 23" text-anchor="middle" fill="var(--na-fg-muted)" style="font-size: 15px">reasons, then chooses</text>
 
     <!-- exit: text answer → You (turn ends) -->
-    <g v-click="lit(6)">
+    <g v-if="lit" v-click="6">
       <path d="M 622 152 C 800 152, 905 160, 911 99" fill="none" stroke="var(--na-accent-500)" stroke-width="2.5" stroke-dasharray="7 5" :marker-end="marker('arrow-accent')" />
       <rect x="872" y="56.5" width="80" height="40" rx="8" fill="var(--na-bg-raised)" stroke="var(--na-accent-500)" stroke-width="2" />
       <text x="912" y="82.5" text-anchor="middle" fill="var(--na-fg)" font-weight="700" style="font-size: 17px">You</text>
@@ -110,7 +112,7 @@ const lit = (n: number) => (props.hooks || props.btw ? false : n)
       <g v-click="1">
         <rect :x="pt(-90).x - 52" :y="pt(-90).y - 14" width="104" height="28" rx="14" fill="var(--na-accent-500)" />
         <text :x="pt(-90).x" :y="pt(-90).y + 5.5" text-anchor="middle" fill="var(--na-zinc-950)" font-weight="700" style="font-size: 15px">PreToolUse</text>
-        <text :x="pt(-90).x" y="16" text-anchor="middle" fill="var(--na-accent-400)" font-weight="600" style="font-size: 15px">exit 2 → blocks the call, before any rule</text>
+        <text :x="pt(-90).x" y="16" text-anchor="middle" fill="var(--na-accent-400)" font-weight="600" style="font-size: 15px">exit 2 → blocks the call, even if a rule allows it</text>
       </g>
       <g v-click="2">
         <rect :x="pt(90).x - 56" :y="pt(90).y - 14" width="112" height="28" rx="14" fill="var(--na-secondary-500)" />

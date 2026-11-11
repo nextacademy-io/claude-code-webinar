@@ -1,0 +1,34 @@
+{
+  "sandbox": {
+    "enabled": true
+  },
+  "permissions": {
+    "deny": [
+      "Read(**/.env*)",
+      "Read(~/.claude/.credentials.json)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)"
+    ],
+    "ask": [
+      "WebSearch",
+      "Edit(.devcontainer/**)",
+      "Edit(.claude/**)",
+      "Edit(~/.claude/settings*.json)",
+      "Bash(git push *)"
+    ],
+    "allow": [
+      "WebFetch(domain:code.claude.com)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "WebFetch(domain:platform.claude.com)",
+      "WebFetch(domain:developer.mozilla.org)",
+      "WebFetch(domain:nodejs.org)",
+      "WebFetch(domain:docs.npmjs.com)",
+      "WebFetch(domain:vuejs.org)",
+      "WebFetch(domain:sli.dev)",
+      "WebFetch(domain:vite.dev)",
+      "WebFetch(domain:docs.github.com)",
+      "WebFetch(domain:stackoverflow.com)",
+      "WebFetch(domain:stackexchange.com)"
+    ]
+  }
+}
