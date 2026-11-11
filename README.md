@@ -15,7 +15,7 @@ in a box, and why autonomy is earned by verification.
 | [`cheat-sheet.pdf`](cheat-sheet.pdf) | Four harnesses, one loop: the same moves in Claude Code, GitHub Copilot, Codex and OpenCode, each with its documentation link. |
 | [`guard-tests/`](guard-tests/) | A hook for Claude Code: Claude writes new tests freely, a change to a committed test needs your approval. With its own tests. |
 | [`slides/`](slides/) | The slides as a [Slidev](https://sli.dev) deck. The notes under each slide are the trainer's cues, in German. |
-| [`slides.pdf`](slides.pdf) | The same slides as a PDF, without notes. |
+| [`claude-code-webinar.pdf`](claude-code-webinar.pdf) | The same slides as a PDF, without notes. |
 | [`subagents/`](subagents/) | The three checkers from the webinar, and `rule-checker`: a subagent that can read but never edit. |
 | [`effort-race/`](effort-race/) | The race from the webinar: the same review at low and high effort, measured and scored. Run it with your own model. |
 | [`.devcontainer/`](.devcontainer/) | Claude in a box: a dev container with Claude Code and Node, ready to open. |
@@ -34,7 +34,7 @@ npm run dev
 ```
 
 The deck opens at `http://localhost:3030`. Notes: `http://localhost:3030/presenter/`.
-`npm run export` writes a PDF to `slides/dist/`.
+`npm run export` writes `claude-code-webinar.pdf` to the repository root.
 
 ## Claude in a box
 

@@ -6,7 +6,7 @@ English, notes in German. The notes under each slide explain it, so the deck rea
 ```bash
 npm install
 npm run dev      # http://localhost:3030, notes at /presenter/
-npm run export   # PDF in dist/
+npm run export   # claude-code-webinar.pdf in the repository root
 ```
 
 `styles/`, `layouts/` and the components `D07HarnessLoop`, `D09PermissionGate`, `DocLink`,

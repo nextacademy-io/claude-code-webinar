@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "slidev --open",
     "build": "slidev build",
-    "export": "slidev export --output dist/mastering-claude-code-highlights.pdf"
+    "export": "slidev export --output ../claude-code-webinar.pdf"
   },
   "dependencies": {
     "@slidev/cli": "^52.19.1",
