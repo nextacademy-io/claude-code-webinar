@@ -55,6 +55,9 @@ git status --short -- tests/
 - The shell check is strict on purpose: a command that names `tests`, or
   runs inside it, and writes, moves or deletes files is blocked, also after
   `cd tests`.
+- A git command that rewrites the whole working tree without naming `tests`,
+  such as `git restore .` or `git restore --source=<commit> .`, is not
+  checked. `git status --short -- tests/` shows the result.
 - The hook remembers per session and file that Claude was told, in a small
   marker in your temp folder (`GUARD_TESTS_STATE_DIR` to move it).
 - The prompt offers only Yes or No, no "don't ask again": every change to an

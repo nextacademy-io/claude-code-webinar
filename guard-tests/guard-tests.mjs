@@ -58,7 +58,7 @@ const writesFiles = [
   /\bsed\b[^|;&]*\s(-[a-zA-Z]*i|--in-place)/, // -i, -Ei, -i.bak, --in-place
   /\bperl\b[^|;&]*\s-[a-z]*i/,
   /\b(tee|mv|cp|rm|rmdir|touch|truncate|unlink|del|erase|move|copy|ren)\b/i,
-  /\bgit\s+(checkout|restore|rm|mv|apply)\b/i,
+  /\bgit(\s+(-[cC]\s+\S+|--?[\w-]+(=\S+)?))*\s+(checkout|restore|rm|mv|apply)\b/i, // also "git -C tests restore x"
   /\b(Set-Content|Add-Content|Out-File|Clear-Content|New-Item|Remove-Item|Move-Item|Copy-Item|Rename-Item)\b/i,
   /\[(System\.)?IO\.File\]::/i,
 ];
