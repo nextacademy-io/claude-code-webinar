@@ -25,6 +25,6 @@
   "postCreateCommand": "sudo apt-get update && sudo apt-get install -y bubblewrap socat && npm --prefix slides install",
   // the named volume is created root-owned; hand it to node so sessions and sign-in can be saved,
   // then merge the nested-sandbox key into the container user's settings (never into the repo's)
-  "postStartCommand": "sudo chown -R node:node /home/node/.claude && node .devcontainer/user-settings.js",
+  "postStartCommand": "sudo chown -R node:node /home/node/.claude && node .devcontainer/user-settings.cjs",
   "forwardPorts": [3030]
 }
