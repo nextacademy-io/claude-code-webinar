@@ -18,8 +18,13 @@ only, so it can look but never edit: a checker that cannot change a test cannot 
 ## Use it
 
 1. Copy `rule-checker.md` to `.claude/agents/` in your project (or `~/.claude/agents/` for all
-   projects).
-2. Run `/agents` in Claude Code: `rule-checker` must appear.
+   projects). You can also ask Claude to create the subagent for you: ask for read-only tools and
+   check the `tools:` line of the file it writes. Without that line the subagent gets every tool.
+   List whole tool names there: `Bash(git *)` would still hand it the whole shell.
+2. If the `agents` folder did not exist when your session started, restart Claude Code once. A
+   running session only picks up new files in a folder that was already there. Then ask Claude
+   which subagents it can use: `rule-checker` must be in the list. If it is missing, Claude may
+   fall back to a general subagent that can edit.
 3. Ask for it by name, one rule per checker:
 
 ```text

@@ -8,7 +8,7 @@
   "features": {
     "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
   },
-  // optional token from `claude setup-token` in .devcontainer/.env (git-ignored, see .env.example);
+  // the token from `claude setup-token` in .devcontainer/.env (git-ignored, see .env.example);
   // the file is created empty on your machine if it is missing, so the container always starts
   "initializeCommand": ["node", "-e", "require('fs').appendFileSync('.devcontainer/.env', '')"],
   "runArgs": ["--env-file", "${localWorkspaceFolder}/.devcontainer/.env"],
@@ -23,8 +23,8 @@
   },
   // the Bash sandbox needs bubblewrap and socat on Linux; without them commands run unsandboxed
   "postCreateCommand": "sudo apt-get update && sudo apt-get install -y bubblewrap socat && npm --prefix slides install",
-  // the named volume is created root-owned; hand it to node so sessions and sign-in can be saved,
-  // then merge the nested-sandbox key into the container user's settings (never into the repo's)
-  "postStartCommand": "sudo chown -R node:node /home/node/.claude && node .devcontainer/user-settings.cjs",
-  "forwardPorts": [3030]
+  // the named volume is created root-owned; hand it to node so sessions and sign-in can be saved
+  "postStartCommand": "sudo chown -R node:node /home/node/.claude",
+  // 3030: the slides; 3001: clash-conference, if you do the task in the box
+  "forwardPorts": [3030, 3001]
 }

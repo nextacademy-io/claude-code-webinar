@@ -42,11 +42,12 @@ after(() => {
   rmSync(stateDir, { recursive: true, force: true });
 });
 
-function run(input, cwd = project, state = stateDir) {
+function run(input, cwd = project, state = stateDir, extraEnv = {}) {
   const result = spawnSync(process.execPath, [HOOK], {
     input: typeof input === "string" ? input : JSON.stringify(input),
-    env: { ...process.env, CLAUDE_PROJECT_DIR: cwd, GUARD_TESTS_STATE_DIR: state },
+    env: { ...process.env, CLAUDE_PROJECT_DIR: cwd, GUARD_TESTS_STATE_DIR: state, ...extraEnv },
     encoding: "utf8",
+    timeout: 10000,
   });
   const output = result.stdout ? JSON.parse(result.stdout).hookSpecificOutput : {};
   return {
@@ -108,6 +109,21 @@ test("a relative path is recognised", () => {
   assert.equal(run(edit("tests/talks.spec.ts")).decision, "ask");
 });
 
+test("a committed test spelled in another case is recognised", () => {
+  assert.equal(run(edit("Tests/Talks.spec.ts")).decision, "ask");
+});
+
+test("GIT_LITERAL_PATHSPECS does not hide a committed test", () => {
+  const result = run(edit("tests/talks.spec.ts"), project, stateDir, { GIT_LITERAL_PATHSPECS: "1" });
+  assert.equal(result.decision, "ask");
+});
+
+test("a long line of git options does not hang the hook", () => {
+  const command = "git" + " --x".repeat(40) + " version; cd tests && printf x > talks.spec.ts";
+  const result = run(shell("Bash", command));
+  assert.equal(result.code, 2);
+});
+
 // New tests are free
 
 test("Write of a new test passes silently", () => {
@@ -156,6 +172,56 @@ for (const [tool, command] of [
   ["PowerShell", "Set-Location -Path tests; 'x' > talks.spec.ts"],
   ["PowerShell", "Set-Location -LiteralPath tests; 'x' > talks.spec.ts"],
   ["PowerShell", "Push-Location tests; 'x' > talks.spec.ts"],
+  ["Bash", "git stash push -- tests/"],
+  ["Bash", "git clean -f tests/"],
+  ["Bash", "awk -i inplace '{print}' tests/talks.spec.ts"],
+  ["Bash", "patch tests/talks.spec.ts fix.diff"],
+  ["Bash", "dd if=old.ts of=tests/talks.spec.ts"],
+  ["Bash", "ln -sf ../old.ts tests/talks.spec.ts"],
+  ["Bash", "rsync -a backup/ tests/"],
+  ["PowerShell", "sc tests\\talks.spec.ts '// x'"],
+  ["PowerShell", "ac tests\\talks.spec.ts '// x'"],
+  ["PowerShell", "ni tests\\talks.spec.ts -Force"],
+  ["PowerShell", "ri tests\\talks.spec.ts"],
+  ["PowerShell", "cpi old.ts tests\\talks.spec.ts"],
+  ["PowerShell", "Get-ChildItem tests | ri"],
+  ["Bash", "find tests -name '*.ts' -exec ln -sf {} /tmp/x \\;"],
+  ["Bash", "npm ci && patch -p1 tests/talks.spec.ts < fix.diff"],
+  ["Bash", "for f in tests/*.spec.ts; do patch \"$f\" < fix.diff; done"],
+  ["Bash", "if [ -f tests/talks.spec.ts ]; then dd if=old.ts of=tests/talks.spec.ts; fi"],
+  ["Bash", "time patch tests/talks.spec.ts fix.diff"],
+  ["Bash", "/usr/bin/patch tests/talks.spec.ts fix.diff"],
+  ["Bash", "find tests -name '*.spec.ts' | xargs -n 1 ln -sf ../stub.ts"],
+  ["PowerShell", "$null = ni tests\\talks.spec.ts -ItemType File -Force"],
+  ["PowerShell", "Get-ChildItem tests -Filter *.ts | ri; git status"],
+  ["PowerShell", "(Get-ChildItem tests | ri)"],
+  ["PowerShell", "clc tests\\talks.spec.ts"],
+  ["Bash", "ls tests/*.spec.ts | xargs -I {} ln -sf ../stub.ts {}"],
+  ["Bash", "sudo -u node ln -sf ../stub.ts tests/talks.spec.ts"],
+  ["Bash", "sh -c 'patch tests/talks.spec.ts fix.diff'"],
+  ["Bash", "LC_ALL=C patch tests/talks.spec.ts fix.diff"],
+  ["Bash", "powershell -Command \"ri tests\\talks.spec.ts\""],
+  ["Bash", "printf x >& tests/talks.spec.ts"],
+  ["Bash", "npx eslint --fix tests/talks.spec.ts"],
+  ["Bash", "npx prettier --write tests/"],
+  ["PowerShell", "xcopy /y old.ts tests\\talks.spec.ts"],
+  ["PowerShell", "robocopy backup tests talks.spec.ts"],
+  ["PowerShell", "cmd /c mklink /J t tests"],
+  ["PowerShell", "(Get-Item tests\\talks.spec.ts).Delete()"],
+  ["Bash", "cd \"C:\\Users\\me\\OneDrive - Contoso\\app\\tests\" && printf x > talks.spec.ts"],
+  ["Bash", "printf x > \"/Users/me/My Projects/app/tests/talks.spec.ts\""],
+  ["PowerShell", "Set-Location \"C:\\Users\\me\\OneDrive - Contoso\\app\\tests\"; 'x' > talks.spec.ts"],
+  ["Bash", "perl -0pi -e 's/accepted/refused/' tests/talks.spec.ts"],
+  ["Bash", "sed -I '' 's/accepted/refused/' tests/talks.spec.ts"],
+  ["Bash", "gsed -i 's/accepted/refused/' tests/talks.spec.ts"],
+  ["PowerShell", "Remove-Item lib\\old.ts,tests\\talks.spec.ts"],
+  ["Bash", "sed -i 's/validateTalk/validateTalkInput/g' {lib,tests}/*.ts"],
+  ["Bash", "rm -rf tests*"],
+  ["Bash", "cd tests && printf x >& talks.spec.ts"],
+  ["Bash", "find tests -name 'talks.spec.ts' -delete"],
+  ["Bash", "git update-index --force-remove tests/talks.spec.ts"],
+  ["Bash", "git reset -q HEAD~1 -- tests/talk-rules.spec.ts"],
+  ["PowerShell", "$f = Get-Item tests\\talks.spec.ts; $f.Delete()"],
 ]) {
   test(`${tool} blocks: ${command}`, () => {
     const r = run(shell(tool, command));
@@ -181,10 +247,21 @@ for (const [tool, command] of [
   ["Bash", 'git add tests/talk-rules.spec.ts && git commit -m "add talk rule specs"'],
   ["Bash", "git -C tests status"],
   ["Bash", "git log --oneline -- tests/"],
-  ["Bash", "git checkout origin/webinar-solution -- .claude/hooks .claude/settings.json"],
+  ["Bash", "git checkout origin/webinar-solution -- .claude/hooks/guard-db.mjs .claude/settings.json"],
   ["Bash", 'git add tests/talk-rules.spec.ts && git commit -m "restore the checkout rule specs"'],
   ["PowerShell", "cd tests; npx playwright test 2>$null"],
   ["PowerShell", "Set-Location -Path tests; npx playwright test *> $null"],
+  ["Bash", "npm install && npx playwright test tests/talks.spec.ts"],
+  ["Bash", "grep -ri talk tests/"],
+  ["Bash", "grep -rni talk tests/"],
+  ["Bash", "git diff --patch tests/"],
+  ["Bash", "npx playwright test tests/ac.spec.ts"],
+  ["PowerShell", "Select-String -Path tests\\*.ts -Pattern 'ni'"],
+  ["Bash", "npx playwright test tests/move-talk.spec.ts"],
+  ["Bash", "cat tests/copy.spec.ts"],
+  ["Bash", "grep -rn \"copy\" tests/"],
+  ["Bash", "git log --oneline --grep=move -- tests/"],
+  ["Bash", "grep -rn \"talk.delete(\" tests/"],
 ]) {
   test(`${tool} passes: ${command}`, () => {
     const r = run(shell(tool, command));

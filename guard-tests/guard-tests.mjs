@@ -1,19 +1,14 @@
-// PreToolUse hook for Claude Code: new tests are free, old tests need you.
+// guard-tests: a PreToolUse hook for Claude Code. New tests are free, committed tests need you.
 //
-// - Edit or Write on a NEW test file (not yet in git): passes silently.
-// - Edit or Write on a test file that git already tracks: a changed test is a
-//   changed requirement, so a human decides, in two steps:
-//   1. The first attempt is refused, and Claude reads why. Claude has to tell
-//      you which test it wants to change and why.
-//   2. If Claude tries the same file again in this session, Claude Code asks
-//      you with the diff. The docs say the prompt also shows the hook's
-//      reason; in our test (Claude Code 2.1.321, Windows) it showed only the
-//      diff. Step 1 makes sure you hear the reason either way.
-// - A Bash or PowerShell command that writes under a test folder: blocked with
-//   exit 2. Claude has to use Edit or Write, where the rule above applies.
+//   Edit or Write on a new test        -> allow
+//   Edit or Write on a committed test  -> first time in a session: deny, so Claude has to explain why
+//                                         after that: ask you, with the diff
+//   Bash or PowerShell writing there   -> block, Claude has to use Edit or Write
 //
-// The tool call arrives as JSON on stdin. If the hook cannot check something,
-// it asks or blocks instead of letting the call through.
+// Why deny before ask: the docs say the permission prompt shows the hook's reason,
+// but in our test (Claude Code 2.1.321, Windows) it showed only the diff.
+//
+// When the hook cannot check something, it asks or blocks. It never lets the call through.
 
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
@@ -24,141 +19,200 @@ import path from "node:path";
 // Folders that hold your tests, relative to the project root.
 const TEST_DIRS = ["tests/"];
 
-// Where the hook remembers "Claude was told about this test in this session".
-const STATE_DIR = process.env.GUARD_TESTS_STATE_DIR || path.join(tmpdir(), "claude-guard-tests");
+// Where the hook remembers which committed tests Claude was already told about.
+const MARKER_DIR = process.env.GUARD_TESTS_STATE_DIR || path.join(tmpdir(), "claude-guard-tests");
 
 const FILE_TOOLS = new Set(["Edit", "Write", "MultiEdit", "NotebookEdit"]);
 const SHELL_TOOLS = new Set(["Bash", "PowerShell"]);
 
-const toSlash = (p) => p.replace(/\\/g, "/");
-const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-const dirNames = TEST_DIRS.map((d) => escape(d.replace(/\/$/, "")));
+async function main() {
+  let toolCall;
+  try {
+    toolCall = JSON.parse(await readStdin());
+  } catch {
+    exitWith(block("Blocked: guard-tests could not read the tool call."));
+  }
 
-// A test folder named in a command: "tests/x", "./tests/x", "tests\x", "C:\app\tests\x",
-// ">tests/x", and the folder alone, as in "cd tests && ...".
-const mentionsTestDir = new RegExp(
-  `(^|[\\s"'=(:>|\\\\/])(${dirNames.join("|")})([\\\\/\\s"';&|)]|$)`,
+  try {
+    exitWith(judgeToolCall(toolCall));
+  } catch (error) {
+    // Exit code 1 would let the call through, so an unexpected error blocks it.
+    exitWith(block(`Blocked: guard-tests failed: ${error.message}`));
+  }
+}
+
+function judgeToolCall(toolCall) {
+  const root = process.env.CLAUDE_PROJECT_DIR || toolCall.cwd || process.cwd();
+  const input = toolCall.tool_input ?? {};
+
+  if (FILE_TOOLS.has(toolCall.tool_name)) {
+    const file = input.file_path ?? input.notebook_path;
+    return file ? judgeFileChange(root, file, toolCall.session_id) : ALLOW;
+  }
+  if (SHELL_TOOLS.has(toolCall.tool_name)) {
+    return judgeShellCommand(root, input.command ?? "", toolCall.cwd);
+  }
+  return ALLOW;
+}
+
+// ---- Verdicts -------------------------------------------------------------
+
+const ALLOW = { kind: "allow" };
+const ask = (reason) => ({ kind: "ask", reason });
+const deny = (reason) => ({ kind: "deny", reason });
+const block = (reason) => ({ kind: "block", reason });
+
+// Ask and deny go to Claude Code as JSON. Block is exit code 2, with the reason on stderr.
+function exitWith({ kind, reason }) {
+  if (kind === "ask" || kind === "deny") {
+    const output = { hookEventName: "PreToolUse", permissionDecision: kind, permissionDecisionReason: reason };
+    process.stdout.write(JSON.stringify({ hookSpecificOutput: output }));
+  }
+  if (kind === "block") console.error(reason);
+  process.exit(kind === "block" ? 2 : 0);
+}
+
+// ---- Edit and Write -------------------------------------------------------
+
+function judgeFileChange(root, file, sessionId) {
+  const relPath = projectPath(root, file);
+  if (relPath === null || !isInTestDir(relPath)) return ALLOW;
+
+  const tracking = gitTracking(root, relPath);
+  if (tracking === "untracked") return ALLOW; // a new test
+  if (tracking === "unknown") return ask(`Could not ask git whether ${relPath} is a committed test.`);
+
+  // Without a session id the hook cannot tell a first attempt from a second one.
+  if (!sessionId) return ask(`${relPath} is a committed test.`);
+
+  const marker = markerFile(sessionId, relPath);
+  if (existsSync(marker)) return ask(`${relPath} is a committed test.`);
+  if (!writeMarker(marker)) {
+    return ask(`${relPath} is a committed test. The hook could not write its marker in ${MARKER_DIR}.`);
+  }
+  return deny(
+    `${relPath} is a committed test, so changing it changes a requirement. Do not work around this. ` +
+      "Tell the user which test you want to change and why, and ask whether the product rule really changed. " +
+      "If they agree, make the same edit again: they will get a permission prompt to approve it.",
+  );
+}
+
+// "tracked", "untracked", or "unknown" when git is missing or the project is no repository.
+// icase: "Tests/talks.spec.ts" is the committed "tests/talks.spec.ts", as Windows sees it.
+function gitTracking(root, relPath) {
+  const pathspec = `:(literal,icase)${relPath}`;
+  const env = { ...process.env };
+  delete env.GIT_LITERAL_PATHSPECS; // it would switch off the pathspec magic above
+  const result = spawnSync("git", ["ls-files", "-z", "--", pathspec], { cwd: root, encoding: "utf8", env });
+  if (result.status !== 0) return "unknown";
+  return result.stdout ? "tracked" : "untracked";
+}
+
+// One empty file per session and test. The name is a hash, so any path makes a valid file name.
+// Lower case, like isInTestDir and git's icase: "Tests/x" finds the marker "tests/x" left.
+function markerFile(sessionId, relPath) {
+  const hash = createHash("sha256").update(`${sessionId}\n${relPath.toLowerCase()}`).digest("hex");
+  return path.join(MARKER_DIR, hash);
+}
+
+function writeMarker(marker) {
+  try {
+    mkdirSync(MARKER_DIR, { recursive: true });
+    writeFileSync(marker, "");
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+// ---- Bash and PowerShell --------------------------------------------------
+//
+// Strict on purpose: a command that names a test folder, or runs inside one,
+// and writes, moves or deletes files is blocked.
+
+function judgeShellCommand(root, command, cwd) {
+  const runsInTestDir = Boolean(cwd) && isInTestDir(projectPath(root, cwd) ?? "");
+  if (!runsInTestDir && !NAMES_TEST_DIR.test(command)) return ALLOW;
+
+  const changesFiles = FILE_CHANGING_COMMANDS.some((pattern) => pattern.test(command));
+  const redirectsInTestDir =
+    (runsInTestDir || ENTERS_TEST_DIR.test(command)) && REDIRECTS_TO_FILE.test(command);
+  if (!changesFiles && !redirectsInTestDir) return ALLOW;
+
+  return block(
+    `Blocked: this command writes under ${TEST_DIRS.join(", ")}. ` +
+      "Use the Write tool for a new test and the Edit tool for a committed one, " +
+      "so the user can review changes to old tests.",
+  );
+}
+
+const TEST_DIR_NAMES = TEST_DIRS.map((dir) => escapeRegExp(dir.replace(/\/$/, ""))).join("|");
+
+// Names a test folder: "tests/x", "./tests/x", "tests\x", "C:\app\tests\x", ">tests/x", "cd tests".
+// Also in lists and patterns: "lib\x,tests\y", "{lib,tests}/*.ts", "tests*".
+const NAMES_TEST_DIR = new RegExp(`(^|[\\s"'=(:>|,{\\\\/])(${TEST_DIR_NAMES})([\\\\/\\s"';&|),}*]|$)`, "i");
+
+// Changes into a test folder: "cd tests", "cd -- tests", "pushd ./tests", "Set-Location -Path tests".
+const ENTERS_TEST_DIR = new RegExp(
+  `\\b(cd|pushd|chdir|sl|Set-Location|Push-Location)\\s+(--?\\w*\\s+)*(["'][^"']*|[^\\s"';&|]*)\\b(${TEST_DIR_NAMES})\\b`,
   "i",
 );
 
-// Changing into a test folder: "cd tests", "cd -- tests", "pushd ./tests",
-// "Set-Location -Path tests", "Push-Location tests".
-const entersTestDir = new RegExp(
-  `\\b(cd|pushd|chdir|sl|Set-Location|Push-Location)\\s+(--?\\w*\\s+)*["']?[^\\s"';&|]*\\b(${dirNames.join("|")})\\b`,
-  "i",
-);
+// Redirects into a file: "> x", ">> x", ">| x", ">& x". Not "2>&1", ">&2", "> /dev/null" or "> $null".
+const REDIRECTS_TO_FILE = />>?(?!\s*&\s*[\d-])[|&]?(?!\s*(\/dev\/null|\$null|nul\b))\s*["']?[^\s>]/i;
 
-// A redirect into a file: "> x", ">> x" and ">| x", but not "2>&1", ">&2",
-// "> /dev/null" or "> $null".
-const redirectsToFile = />>?\|?(?!\s*(&|\/dev\/null|\$null|nul\b))\s*["']?[^\s>]/i;
+// Command words count as a word of their own anywhere ("do patch x", "/usr/bin/patch x",
+// "$null = ni x", "| ri;"), but not inside a flag or a file name: "grep -ri x tests/" and
+// "tests/move-talk.spec.ts" stay readable. A bare argument with such a name ("grep ac tests/") is blocked.
+const COMMAND_WORD = (words) => new RegExp(String.raw`(?<![\w.=-])(${words})(?=[\s;&|)}]|$)`, "i");
 
-// Commands that write, move or delete files.
-const writesFiles = [
-  new RegExp(`>>?\\|?\\s*["']?[^\\s"'|;&]*(${dirNames.join("|")})[\\\\/]`, "i"), // redirect into a test folder
-  /\bsed\b[^|;&]*\s(-[a-zA-Z]*i|--in-place)/, // -i, -Ei, -i.bak, --in-place
-  /\bperl\b[^|;&]*\s-[a-z]*i/,
-  /\b(tee|mv|cp|rm|rmdir|touch|truncate|unlink|del|erase|move|copy|ren)\b/i,
-  /\bgit(\s+(-[cC]\s+\S+|--?[\w-]+(=\S+)?))*\s+(checkout|restore|rm|mv|apply)\b/i, // also "git -C tests restore x"
+const FILE_CHANGING_COMMANDS = [
+  // redirect into a test folder, also ">&" and quoted paths with spaces
+  new RegExp(`>>?[|&]?\\s*(["'][^"']*|[^\\s"'|;&]*)(${TEST_DIR_NAMES})[\\\\/]`, "i"),
+  /\s--(fix|write)\b/, // formatters that rewrite files: eslint --fix, prettier --write
+  /\bg?sed\b[^|;&]*\s(-[a-z]*i|--in-place)/i, // sed -i, -Ei, -i.bak, --in-place, BSD sed -I, gsed
+  /\s-delete\b/, // find tests -delete
+  /\bperl\b[^|;&]*\s-[a-zA-Z0-9]*i/, // perl -i, -pi, -0pi
+  /\bg?awk\b[^|;&]*\s-i\s*inplace\b/, // awk -i inplace
+  COMMAND_WORD(
+    "tee|mv|cp|rm|rmdir|touch|truncate|unlink|rsync|del|erase|move|copy|xcopy|robocopy|mklink|ren|ln|dd|patch",
+  ),
+  // also "git -C tests restore x"; each option has one reading only, so a long line cannot hang the hook
+  // reset, update-index and read-tree can take a test out of the index, so it would count as new
+  /\bgit(\s+(-[cC]\s+[^-\s]\S*|-{1,2}\w[\w-]*(=\S+)?))*\s+(checkout|restore|rm|mv|apply|stash|clean|reset|update-index|read-tree)\b/i,
   /\b(Set-Content|Add-Content|Out-File|Clear-Content|New-Item|Remove-Item|Move-Item|Copy-Item|Rename-Item)\b/i,
-  /\[(System\.)?IO\.File\]::/i,
+  COMMAND_WORD("sc|ac|clc|ni|ri|rd|mi|cpi|rni"), // their PowerShell aliases
+  /\[(System\.)?IO\.File\]::/i, // the .NET file API, from PowerShell
+  /(\)|\$\w+)\.(Delete|MoveTo)\s*\(/i, // (Get-Item tests\x).Delete(), $f.Delete()
 ];
 
-function decide(permissionDecision, reason) {
-  process.stdout.write(
-    JSON.stringify({
-      hookSpecificOutput: { hookEventName: "PreToolUse", permissionDecision, permissionDecisionReason: reason },
-    }),
-  );
-  process.exit(0);
+// ---- Helpers --------------------------------------------------------------
+
+// The path relative to the project root, with forward slashes. Null if it lies outside the project.
+function projectPath(root, target) {
+  const relPath = toSlash(path.relative(root, path.resolve(root, target)));
+  return relPath.startsWith("../") || path.isAbsolute(relPath) ? null : relPath;
 }
 
-function block(reason) {
-  console.error(reason);
-  process.exit(2);
+// A test folder itself, or anything inside one. Ignores case, as Windows does.
+function isInTestDir(relPath) {
+  const folderPath = `${relPath}/`.toLowerCase();
+  return TEST_DIRS.some((dir) => folderPath.startsWith(dir.toLowerCase()));
 }
 
-// "tracked", "untracked" or "unknown" (git missing or not a repository).
-function gitStatus(root, rel) {
-  const result = spawnSync("git", ["ls-files", "-z", "--", rel], { cwd: root, encoding: "utf8" });
-  if (result.status !== 0) return "unknown";
-  return result.stdout.length > 0 ? "tracked" : "untracked";
+function toSlash(filePath) {
+  return filePath.replace(/\\/g, "/");
 }
 
-// True the first time Claude touches this test in this session.
-function firstAttempt(sessionId, rel) {
-  const marker = path.join(STATE_DIR, createHash("sha256").update(`${sessionId}\n${rel}`).digest("hex"));
-  if (existsSync(marker)) return false;
-  try {
-    mkdirSync(STATE_DIR, { recursive: true });
-    writeFileSync(marker, "");
-  } catch {
-    decide("ask", `${rel} is a committed test. The hook could not write its marker in ${STATE_DIR}.`);
-  }
-  return true;
+function escapeRegExp(text) {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-function checkFile(root, file, sessionId) {
-  const rel = toSlash(path.relative(root, path.resolve(root, file)));
-  if (rel.startsWith("../") || path.isAbsolute(rel)) return; // outside the project
-  const inTestDir = TEST_DIRS.some((dir) => rel.toLowerCase().startsWith(dir.toLowerCase()));
-  if (!inTestDir) return;
-
-  const status = gitStatus(root, rel);
-  if (status === "untracked") return; // a new test
-  if (status === "unknown") {
-    decide("ask", `Could not ask git whether ${rel} is a committed test.`);
-  }
-  if (sessionId && firstAttempt(sessionId, rel)) {
-    decide(
-      "deny",
-      `${rel} is a committed test, so changing it changes a requirement. Do not work around this. ` +
-        "Tell the user which test you want to change and why, and ask whether the product rule really changed. " +
-        "If they agree, make the same edit again: they will get a permission prompt to approve it.",
-    );
-  }
-  decide("ask", `${rel} is a committed test.`);
+async function readStdin() {
+  process.stdin.setEncoding("utf8");
+  let text = "";
+  for await (const chunk of process.stdin) text += chunk;
+  return text;
 }
 
-// True if the path is a test folder or lies inside one.
-function isInTestDir(root, target) {
-  const rel = `${toSlash(path.relative(root, path.resolve(root, target)))}/`.toLowerCase();
-  return TEST_DIRS.some((dir) => rel.startsWith(dir.toLowerCase()));
-}
-
-function checkCommand(command, root, cwd) {
-  // A working directory inside a test folder counts like naming the folder.
-  const startsInside = Boolean(cwd) && isInTestDir(root, cwd);
-  if (!startsInside && !mentionsTestDir.test(command)) return;
-  const writes =
-    writesFiles.some((pattern) => pattern.test(command)) ||
-    ((startsInside || entersTestDir.test(command)) && redirectsToFile.test(command));
-  if (!writes) return;
-  block(
-    `Blocked: this command writes under ${TEST_DIRS.join(", ")}. ` +
-      "Use the Write tool for a new test and the Edit tool for a committed one, so the user can review changes to old tests.",
-  );
-}
-
-// Last resort: an unexpected error blocks the call (exit 1 would let it through).
-process.on("uncaughtException", (error) => block(`Blocked: guard-tests failed: ${error.message}`));
-
-let raw = "";
-process.stdin.on("data", (chunk) => (raw += chunk));
-process.stdin.on("end", () => {
-  let input;
-  try {
-    input = JSON.parse(raw);
-  } catch {
-    block("Blocked: guard-tests could not read the tool call.");
-  }
-  const tool = input.tool_name ?? "";
-  const root = process.env.CLAUDE_PROJECT_DIR || input.cwd || process.cwd();
-
-  if (FILE_TOOLS.has(tool)) {
-    const file = input.tool_input?.file_path ?? input.tool_input?.notebook_path ?? "";
-    if (file) checkFile(root, file, input.session_id);
-  } else if (SHELL_TOOLS.has(tool)) {
-    checkCommand(input.tool_input?.command ?? "", root, input.cwd);
-  }
-  process.exit(0);
-});
+await main();

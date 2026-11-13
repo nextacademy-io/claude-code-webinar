@@ -41,7 +41,9 @@ layout: concept
 
 <!--
 - Zugzwang im Schach: Du musst ziehen, jeder Zug hat einen Preis.
-- Was das für Claude Code bedeutet heute im Webinar.
+- Heute: was das für Claude Code bedeutet.
+- Wer bis zum Schluss bleibt, bekommt ein Geschenk.
+- 👋 Kurze nextacademy-Trainervorstellung.
 -->
 
 ---
@@ -169,7 +171,7 @@ lines:
 
 ---
 layout: concept
-heading: "The app: one question, two answers"
+heading: "The app: two questions, one answer"
 ---
 
 <div class="grid grid-cols-2 gap-8 w-full max-w-5xl items-center">
@@ -182,7 +184,7 @@ heading: "The app: one question, two answers"
 ```txt
 Can a talk start in the past?
 Can two talks share a room and a start?
-Name the file behind each answer.
+Name the file and line behind each answer.
 ```
 
 <div v-click class="text-2xl font-semibold" style="color: var(--na-accent-500)">Both: yes. Nothing checks either.</div>
@@ -194,7 +196,8 @@ Name the file behind each answer.
 - 🖥 20 Sekunden Browser: die Liste, einmal Edit.
 - Ihr organisiert eine Konferenz. Ein Talk hat Titel, Start und Raum.
 - 📊 Beides geht, nur eins oder keins? Schliessen, zeigen.
-- 🖥 Prompt abschicken. Stille mit Erzählen füllen.
+- 🖥 Prompt abschicken.
+- Während es läuft: Achtet auf die Tool-Aufrufe. Das ist Claude beim Lesen.
 - [click] Beides geht. Das Datum ist gültig, ob es sinnvoll ist, prüft niemand.
 - Ein alter Test verlangt sogar die Vergangenheit. Merkt ihn euch.
 - Kein Fehler im Code, hier fehlen zwei Regeln.
@@ -213,13 +216,13 @@ lines:
 <div class="na-card px-4 py-3 font-mono text-sm">Can Claude still change a test with sed -i when Edit(tests/**) is denied?</div>
 <div class="flex gap-6 w-full">
   <div class="na-card p-5 flex-1" style="border-color: var(--na-error-500)">
-    <div class="font-mono text-xs mb-2" style="color: var(--na-error-500)">guessing · "quick question"</div>
-    <div class="text-base">"Yes: the deny only covers the file tools, not Bash."</div>
+    <div class="font-mono text-xs mb-2" style="color: var(--na-error-500)">guessing · “quick question”</div>
+    <div class="text-base">“Yes: the deny only covers the file tools, not Bash.”</div>
     <div class="text-sm mt-2" style="color: var(--na-fg-muted)">No tool call. From training. Sure of itself. Wrong.</div>
   </div>
   <div class="na-card p-5 flex-1" v-click style="border-color: var(--na-success-500)">
-    <div class="font-mono text-xs mb-2" style="color: var(--na-success-500)">grounded · "check the docs first"</div>
-    <div class="text-base">"No: Edit deny rules also cover sed, tee and &gt; in Bash."</div>
+    <div class="font-mono text-xs mb-2" style="color: var(--na-success-500)">grounded · “check the docs first”</div>
+    <div class="text-base">“No: Edit deny rules also cover sed, tee and &gt; in Bash.”</div>
     <div class="text-sm mt-2" style="color: var(--na-fg-muted)">Read the permissions docs, then answered. Quotes the source.</div>
   </div>
 </div>
@@ -255,7 +258,7 @@ lines:
 - [click] Der Harness führt aus, nicht das Modell.
 - [click] Ergebnis zurück, der Ring dreht sich.
 - [click] Textantwort: Der Turn endet.
-- Und ihr habt eine Zwischenfrage.
+- Aber mitten im Lauf kommt eine Frage.
 -->
 
 ---
@@ -282,9 +285,9 @@ lines:
 
 ---
 layout: concept
-heading: "Thinking time: does more effort make a better move?"
+heading: "Thinking time: more effort, better move?"
 lines:
-  - "Effort sets how much the model thinks on every step."
+  - "Effort sets how deep the model may think. It decides per step."
 ---
 
 <div class="flex flex-col items-center gap-6 w-full max-w-3xl">
@@ -307,16 +310,16 @@ lines:
 ---
 layout: concept
 heading: "Permissions"
+docs: https://code.claude.com/docs/en/permissions
 lines:
   - "The model asks. The harness decides: a rule from settings, or you."
-  - "The mode sets how often the gate asks you."
 ---
 
 <D09PermissionGate />
 
 <!--
 - 💬 Wie oft soll ein Agent fragen? 1 immer, 2 bei Edits, 3 nie.
-- 🖥 Klon A fertig? Dann Dev-Server: A stoppen, B starten.
+- 🖥 Klon A fertig? Dann Dev-Server :3001: A stoppen, B starten. Sonst zu Beginn von Folie 15.
 - [click] Regel in den Settings?
 - [click] Ja: erlaubt oder verboten, ohne dich.
 - [click] Nein: Du wirst gefragt.
@@ -332,8 +335,9 @@ lines:
 ---
 layout: concept
 heading: "Hooks"
+docs: https://code.claude.com/docs/en/hooks
 lines:
-  - "Your own shell command on the ring: before a tool, after it, or at the exit"
+  - "Your own shell command on the ring: before a tool, after it, or at the exit."
   - "Before a tool, exit 2 blocks it. After a tool, exit 2 gives the model the error."
 ---
 
@@ -352,19 +356,19 @@ lines:
 
 ---
 layout: concept
-heading: "Zugzwang: update the test, or fix the logic?"
+heading: "Zugzwang: change the test or the logic?"
 ---
 
 <div class="w-full grid grid-cols-2 gap-8 text-base">
   <div class="flex flex-col gap-2">
-    <div class="font-semibold text-center" style="color: var(--na-fg-muted)">Careless</div>
+    <div class="font-semibold text-center" style="color: var(--na-fg-muted)">careless</div>
     <div v-click="1" class="na-card px-3 py-2" style="border-color: var(--na-zinc-700)">“update the test so the suite passes”</div>
     <div v-click="2" class="na-card px-3 py-2" style="border-color: var(--na-zinc-700)">Claude edits the assertion</div>
     <div v-click="3" class="text-center font-semibold mt-1" style="color: var(--na-error-500)">green, rule broken</div>
   </div>
   <div class="flex flex-col gap-2">
-    <div class="font-semibold text-center" style="color: var(--na-fg-muted)">Engineered</div>
-    <div v-click="4" class="na-card px-3 py-2 font-mono text-sm" style="border-color: var(--na-primary-500)">“change lib/validation.ts only, not the tests”</div>
+    <div class="font-semibold text-center" style="color: var(--na-fg-muted)">engineered</div>
+    <div v-click="4" class="na-card px-3 py-2" style="border-color: var(--na-primary-500)">“change lib/validation.ts only, not the tests”</div>
     <div v-click="5" class="na-card px-3 py-2" style="border-color: var(--na-primary-500)">Claude edits the logic</div>
     <div v-click="6" class="text-center font-semibold mt-1" style="color: var(--na-success-500)">green, rule holds</div>
   </div>
@@ -387,23 +391,26 @@ heading: "Zugzwang: update the test, or fix the logic?"
 ---
 layout: concept
 heading: "Advice vs. law"
+lines:
+  - "Zugzwang: who decides the move?"
 ---
 
 <div class="flex flex-col gap-5 w-full max-w-4xl">
 <div class="flex gap-6 w-full">
   <div class="na-card p-5 flex-1" style="border-style: dashed; border-color: var(--na-zinc-600)">
-    <div class="text-sm font-semibold mb-3" style="color: var(--na-fg-muted)">ADVICE</div>
+    <div class="text-sm font-semibold mb-3" style="color: var(--na-fg-muted)">advice</div>
     <div class="text-base">CLAUDE.md: Never edit a file in <code style="color: var(--na-accent-500)">tests/</code> to make a failing test pass.</div>
     <div class="text-sm mt-3" style="color: var(--na-fg-muted)">Can be forgotten.</div>
   </div>
   <div v-click="1" class="na-card p-5 flex-1" style="border-color: var(--na-primary-500); box-shadow: var(--na-shadow-accent)">
-    <div class="text-sm font-semibold mb-3" style="color: var(--na-primary-400)">LAW</div>
-    <div class="text-base">Hook <code>guard-tests</code>: a new test passes. An old test: Claude explains, you approve.</div>
-    <div class="text-base mt-2">Hook <code>guard-db</code>: blocks <code>db:seed</code>, <code>db:reset</code>, <code>setup</code> and <code>rm dev.db</code>.</div>
+    <div class="text-sm font-semibold mb-3" style="color: var(--na-primary-400)">law</div>
+    <div class="text-base">Hook <code>guard-tests</code> lets new tests pass.<br>A committed test: Claude explains, you approve.</div>
+    <div class="text-base mt-2">Hook <code>guard-db</code> blocks <span class="whitespace-nowrap"><code>db:seed</code> · <code>db:reset</code> · <code>setup</code> · <code>rm dev.db</code></span></div>
     <div class="text-sm mt-3" style="color: var(--na-fg-muted)">Runs outside the model, every time.</div>
   </div>
 </div>
-<div v-click="2" class="na-card px-4 py-2 font-mono text-sm text-center" style="border-color: var(--na-accent-500)">git status --short -- tests/ &nbsp;·&nbsp; ?? = new &nbsp;·&nbsp; M = look again</div>
+<div v-click="2" class="text-xl font-semibold text-center" style="color: var(--na-accent-500)">You decide the move, not the model.</div>
+<div v-click="3" class="na-card px-4 py-2 font-mono text-sm text-center" style="border-color: var(--na-accent-500)">git status --short -- tests/<br>?? = untracked (new) &nbsp;·&nbsp; A = added &nbsp;·&nbsp; M = modified: one <b>M</b>oment please ⚠️</div>
 </div>
 
 <!--
@@ -411,12 +418,17 @@ heading: "Advice vs. law"
 - Claude hat geändert / gefragt. Das ist Rat.
 - [click] 🖥 Klon B: «Make the test … pass».
 - Hook lehnt ab, Claude erklärt. «Yes, the product rule changed.»
-- Diff lesen, Yes. Die Titelfrage: Ich entscheide den Zug, nicht das Modell.
+- Diff lesen, Yes.
+- [click] Die Titelfrage: Ich entscheide den Zug, nicht das Modell.
 - 🖥 «Run npm run db:seed now. I allow it.» Geblockt.
 - Zettel am Kühlschrank gegen Schloss.
-- 📊 Umfrage 4: [Zahl] sagten «Weiss ich nicht».
+- Auch eine Deny-Regel auf Bash prüft nur den Text: /bin/rm läuft dran vorbei.
+- Die Sandbox schützt, was ausserhalb des Projekts liegt.
+- 📊 Umfrage 4: [Zahl] sagten «Weiss ich nicht». Nur zählen, keine Namen.
 - [click] 🖥 Klon B: git status --short -- tests/
-- ?? heisst neu. M heisst Moment mal.
+- ?? heisst untracked: neu, git kennt die Datei noch nicht.
+- A heisst added: neu und vorgemerkt.
+- M heisst modified: Moment mal, hinschauen.
 - Wo stehen wir jetzt?
 -->
 
@@ -439,7 +451,7 @@ lines:
 - Die Treppe vom Anfang. Zwei Stufen haben wir jetzt.
 - Unten: pair with Claude. Jeder Schritt gemeinsam.
 - Darüber: goal + gates. Hook und Test halten an, ich entscheide.
-- Und unser Rennen?
+- Aber was sagt das Rennen?
 -->
 
 ---
@@ -452,7 +464,7 @@ lines:
 <div class="flex flex-col items-center gap-6 w-full max-w-3xl">
 <div v-click="1" class="text-sm" style="color: var(--na-fg-muted)">Today: five runs per level</div>
 <div v-click="1" class="grid grid-cols-4 gap-2 w-full text-sm">
-  <div></div><div class="font-semibold text-center">correct</div><div class="font-semibold text-center">false +</div><div class="font-semibold text-center">median output tokens</div>
+  <div></div><div class="font-semibold text-center">correct</div><div class="font-semibold text-center">false positives</div><div class="font-semibold text-center">median output tokens</div>
   <div class="na-card p-3 font-mono">low</div><div class="na-card p-3 text-center">…</div><div class="na-card p-3 text-center">…</div><div class="na-card p-3 text-center">…</div>
   <div class="na-card p-3 font-mono">high</div><div class="na-card p-3 text-center">…</div><div class="na-card p-3 text-center">…</div><div class="na-card p-3 text-center">…</div>
 </div>
@@ -462,11 +474,11 @@ lines:
 <!--
 - 💬 Findet high mehr Bugs? J oder N.
 - 🖥 Rennterminal: Tabelle zeigen.
-- [click] Vorlesen: Wie viele Läufe fanden alle vier Bugs? Falsche Funde? Tokens?
-- Im Kurs: zehn Läufe, beide 4 von 4, high braucht ein Fünftel mehr Tokens (1366 gegen 1658).
-- Ein Messwert, kein Gesetz. Es zählt, was das Terminal zeigt.
-- [click] Bedenkzeit ist ein Regler, kein Wächter. Sicher gemacht haben es Hook und Test.
-- Allein heisst nicht ohne Prüfer.
+- [click] Vorlesen: alle vier? Falsche Funde? Tokens?
+- Im Kurs: beide 4 von 4. high mehr Tokens, stark schwankend.
+- Messwert, kein Gesetz.
+- [click] Regler, kein Wächter. Sicher machen Hook und Test.
+- Autonom heisst nicht ungeprüft.
 -->
 
 ---
@@ -489,9 +501,9 @@ Each answers in one line with file:line.
 ```
 
 <div class="flex flex-col gap-3">
-  <div class="na-card px-4 py-3" v-click="1"><span class="font-mono text-sm" style="color: var(--na-accent-500)">Explore 1</span> · start in the past? · <span style="color: var(--na-fg-muted)">read only</span></div>
-  <div class="na-card px-4 py-3" v-click="1"><span class="font-mono text-sm" style="color: var(--na-accent-500)">Explore 2</span> · one room, one start? · <span style="color: var(--na-fg-muted)">read only</span></div>
-  <div class="na-card px-4 py-3" v-click="1"><span class="font-mono text-sm" style="color: var(--na-accent-500)">Explore 3</span> · tests/ changed? · <span style="color: var(--na-fg-muted)">read only</span></div>
+  <div class="na-card px-4 py-3" v-click="1"><span class="font-mono text-sm" style="color: var(--na-accent-500)">Explore 1</span> · start in the past? · <span style="color: var(--na-fg-muted)">read-only</span></div>
+  <div class="na-card px-4 py-3" v-click="1"><span class="font-mono text-sm" style="color: var(--na-accent-500)">Explore 2</span> · one room, one start? · <span style="color: var(--na-fg-muted)">read-only</span></div>
+  <div class="na-card px-4 py-3" v-click="1"><span class="font-mono text-sm" style="color: var(--na-accent-500)">Explore 3</span> · tests/ changed? · <span style="color: var(--na-fg-muted)">read-only</span></div>
   <div class="text-lg font-semibold mt-2" v-click="2" style="color: var(--na-accent-500)">Back: three lines with file:line. What they read stays in their windows.</div>
 </div>
 
@@ -499,12 +511,58 @@ Each answers in one line with file:line.
 
 <!--
 - 🖥 Klon B, gleiche Session: Prompt aus der Zwischenablage.
-- Drei Prüfer auf einmal, mit einem Prompt.
-- [click] Drei Subagents starten gleichzeitig. Jeder hat sein eigenes Kontextfenster.
-- Explore darf nur lesen. Ein Prüfer, der nichts ändern kann, biegt keinen Test um.
-- [click] Zurück kommen drei Zeilen. Was sie gelesen haben, bleibt bei ihnen.
-- Dauert rund 25 Sekunden. Raumregel steht übrigens in lib/data/talks.ts, nicht in validation.ts.
-- Eigene Prüfer: rule-checker.md im Repo, nur Read, Grep, Glob.
+- Drei Prüfer, ein Prompt.
+- [click] Starten gleichzeitig, je eigenes Kontextfenster.
+- Kein Edit, kein Write. Aber eine Shell.
+- [click] Drei Zeilen zurück. Gelesenes bleibt bei ihnen.
+- ~25 s. Raumregel: lib/data/talks.ts, nicht validation.ts.
+- Explore ist eingebaut. Ein eigener Prüfer?
+-->
+
+---
+layout: concept
+heading: "Your own checker: rule-checker.md"
+docs: https://code.claude.com/docs/en/sub-agents
+lines:
+  - "A subagent is one Markdown file. No Edit, no Write, no shell: this one cannot bend a test."
+---
+
+<div class="grid grid-cols-5 gap-6 w-full max-w-5xl items-center">
+<div class="col-span-3">
+
+```md
+---
+name: rule-checker
+description: Read-only check of one product rule. …
+tools: Read, Grep, Glob
+---
+
+You check one product rule in this repository.
+You change nothing: you have no tool that can.
+
+Answer in one line: yes or no, then the file
+and line that prove it. …
+```
+
+<div class="text-sm mt-2" style="color: var(--na-fg-muted)">Excerpt of <span class="font-mono">subagents/rule-checker.md</span> in the webinar repo</div>
+
+</div>
+<div class="col-span-2 flex flex-col gap-3 text-base">
+  <div class="na-card px-4 py-3" v-click><span class="font-mono text-sm" style="color: var(--na-accent-500)">1</span> · copy <span class="font-mono text-sm">subagents/rule-checker.md</span> → <span class="font-mono text-sm">.claude/agents/</span> in your project, <span style="color: var(--na-fg-muted)">or ask Claude to create it</span></div>
+  <div class="na-card px-4 py-3" v-click><span class="font-mono text-sm" style="color: var(--na-accent-500)">2</span> · new <span class="font-mono text-sm">agents/</span> folder?<br>restart Claude&nbsp;Code once</div>
+  <div class="na-card px-4 py-3" v-click style="border-color: var(--na-accent-500); box-shadow: var(--na-shadow-accent)"><span class="font-mono text-sm" style="color: var(--na-accent-500)">3</span> · <span class="font-mono text-sm">Use three rule-checker subagents in parallel, one per rule: no start in the past, no shared room and start, no talk without a title</span></div>
+</div>
+</div>
+
+<!--
+- Explore gehört zu Claude Code. Dieser Prüfer gehört euch.
+- Eine Markdown-Datei. Oben der Name, unten der Auftrag.
+- Die Zeile tools: nur Read, Grep, Glob. Er kann lesen, aber nichts ändern.
+- [click] Kopiert sie in euer Projekt, nach .claude/agents.
+- Oder nach ~/.claude/agents, dann gilt sie in allen Projekten.
+- Ihr könnt Claude auch bitten, den Prüfer für euch anzulegen.
+- [click] War der Ordner agents neu? Dann Claude Code einmal neu starten.
+- [click] Dann ruft ihr ihn beim Namen. Ein Prüfer pro Regel, die Regeln nennt ihr gleich mit.
 - Das ist die nächste Stufe der Treppe: isolated agents.
 -->
 
@@ -514,7 +572,7 @@ heading: "Isolated agents: Claude in a box"
 docs: https://code.claude.com/docs/en/devcontainer
 lines:
   - "Commands run in the container. Your project files stay on your machine."
-  - "Trusted repos only: a malicious project can take what is in the box, even ~/.claude."
+  - "Trusted repos only: in bypass mode a malicious project can take what is in the box, even ~/.claude."
 ---
 
 <div class="grid grid-cols-5 gap-6 w-full max-w-5xl items-center">
@@ -533,17 +591,19 @@ lines:
 </div>
 <div class="col-span-2 flex flex-col gap-3 text-base">
   <div class="na-card px-4 py-3"><span class="font-mono text-sm" style="color: var(--na-accent-500)">1</span> · <span class="font-mono text-sm">claude setup-token</span> → <span class="font-mono text-sm">.devcontainer/.env</span> <span style="color: var(--na-fg-muted)">(git-ignored)</span></div>
-  <div class="na-card px-4 py-3" v-click><span class="font-mono text-sm" style="color: var(--na-accent-500)">2</span> · VS Code: <span class="font-mono text-sm">Dev Containers: Reopen in Container</span></div>
+  <div class="na-card px-4 py-3" v-click><span class="font-mono text-sm" style="color: var(--na-accent-500)">2</span> · VS Code: <span class="font-mono text-sm whitespace-nowrap">Reopen in Container</span></div>
   <div class="na-card px-4 py-3" v-click style="border-color: var(--na-accent-500); box-shadow: var(--na-shadow-accent)"><span class="font-mono text-sm" style="color: var(--na-accent-500)">3</span> · terminal in the container: <span class="font-mono">claude</span></div>
 </div>
 </div>
 
 <!--
-- Isolation, Teil zwei: Claude in der eigenen Kiste.
-- Wer Docker hat, hat sie schon. Die Datei liegt im Webinar-Repo.
-- Zuerst der Token: claude setup-token, in .devcontainer/.env.
+- Isolation, Teil zwei: Claude bekommt ein eigenes Brett.
+- Befehle laufen dort. Das Repo ist gemountet: Änderungen landen bei euch.
+- Anleitung und Datei im Webinar-Repo.
+- Browser-Login hängt im Container.
+- Darum: Token in .devcontainer/.env.
 - [click] Reopen in Container.
-- [click] Terminal: claude. Sessions bleiben im Volume.
+- [click] Terminal: claude. Schon angemeldet.
 - ⚠ Nur Repos, denen ihr traut.
 - Was haben wir noch zugemacht?
 -->
@@ -565,24 +625,24 @@ lines:
   <div v-click class="na-card p-5 pb-10 relative" style="border-color: var(--na-accent-500)">
     <div class="text-sm font-semibold mb-2" style="color: var(--na-accent-500)">no reading secrets</div>
     <div class="text-base">Deny rules in <span class="font-mono text-sm">.claude/settings.json</span>.</div>
-    <div class="font-mono text-xs mt-3" style="color: var(--na-fg-muted)">.env* · ~/.claude/.credentials.json · ~/.ssh · ~/.aws</div>
+    <div class="font-mono text-xs mt-3" style="color: var(--na-fg-muted)">.env*<br>~/.claude/.credentials.json<br>~/.ssh<br>~/.aws</div>
     <DocLink card href="https://code.claude.com/docs/en/permissions" />
   </div>
   <div v-click class="na-card p-5 pb-10 relative" style="border-color: var(--na-accent-500)">
     <div class="text-sm font-semibold mb-2" style="color: var(--na-accent-500)">sandbox on</div>
-    <div class="text-base">Windows has no Bash sandbox. The Linux box does.</div>
+    <div class="text-base">Native Windows has no Bash sandbox. WSL2 and the Linux box do.</div>
     <div class="font-mono text-xs mt-3" style="color: var(--na-fg-muted)">"sandbox": { "enabled": true }</div>
     <DocLink card href="https://code.claude.com/docs/en/sandboxing" />
   </div>
 </div>
 
 <!--
-- Drei Schichten, die wir dazu gebaut haben.
+- Drei Schichten, die wir dazugebaut haben.
 - [click] Befehle, die Claude startet, sehen den Token nicht. Claude Code selbst schon.
 - [click] Lesen verboten: .env, Anmeldedaten, SSH- und AWS-Schlüssel.
-- [click] Unter Windows gibt es keine Sandbox. In der Linux-Kiste schon.
+- [click] Unter Windows direkt gibt es keine Sandbox. In WSL2 und in der Linux-Kiste schon.
 - Testet es: Ein Skript, das .env öffnet, muss in der Kiste scheitern.
-- Alles im Webinar-Repo, im README beschrieben.
+- Anleitung: docs/devcontainer.md im Webinar-Repo.
 - Wo steht das auf der Treppe?
 -->
 
@@ -594,6 +654,7 @@ lines:
   - "Do not scale autonomy beyond your ability to detect and contain errors."
 ---
 
+<div class="flex flex-col items-center gap-6 w-full">
 <div class="flex items-end gap-4 w-full max-w-4xl justify-center text-sm">
   <div class="na-card px-4 py-3" style="border-color: var(--na-accent-500); box-shadow: var(--na-shadow-accent)">pair with Claude</div>
   <div class="na-card px-4 py-5" v-click style="border-color: var(--na-accent-500); box-shadow: var(--na-shadow-accent)">goal + gates</div>
@@ -601,12 +662,14 @@ lines:
   <div class="na-card px-4 py-9 invisible">background / batch</div>
   <div class="na-card px-4 py-11 invisible">CI / routine</div>
 </div>
+<div class="text-xl font-semibold invisible" aria-hidden="true">You decide the move, not the model.</div>
+</div>
 
 <!--
 - 💬 Welche Stufe war der Live-Lauf, welche der Hook?
 - Ganz unten: pair with Claude. Da hat die Demo angefangen.
 - 🖥 Klon A: /goal tippen, nicht senden.
-- [click] goal + gates: Ein Check entscheidet, wann der Lauf stoppt.
+- [click] goal + gates: Ein Modell prüft das Ziel. Hook und Test halten an.
 - [click] isolated agents: die drei Prüfer und die Kiste.
 - Und darüber?
 -->
@@ -619,19 +682,23 @@ lines:
   - "Do not scale autonomy beyond your ability to detect and contain errors."
 ---
 
+<div class="flex flex-col items-center gap-6 w-full">
 <div class="flex items-end gap-4 w-full max-w-4xl justify-center text-sm">
   <div class="na-card px-4 py-3" style="border-color: var(--na-accent-500); box-shadow: var(--na-shadow-accent)">pair with Claude</div>
   <div class="na-card px-4 py-5" style="border-color: var(--na-accent-500); box-shadow: var(--na-shadow-accent)">goal + gates</div>
   <div class="na-card px-4 py-7" style="border-color: var(--na-accent-500); box-shadow: var(--na-shadow-accent)">isolated agents</div>
-  <div class="na-card px-4 py-9" v-click>background / batch</div>
+  <div class="na-card px-4 py-9">background / batch</div>
   <div class="na-card px-4 py-11" v-click>CI / routine</div>
+</div>
+<div v-click class="text-xl font-semibold" style="color: var(--na-accent-500)">You decide the move, not the model.</div>
 </div>
 
 <!--
-- Drei Stufen habt ihr heute gesehen.
-- [click] background / batch: mehrere Agenten im Hintergrund.
+- Drei Stufen habt ihr heute gesehen. Die vierte:
+- background / batch: mehrere Agenten im Hintergrund.
 - [click] CI und Routinen: ohne euch.
 - Je weniger ihr zuschaut, desto mehr Beleg braucht ihr.
+- [click] Der Agent muss ziehen. Welchen Zug er darf, entscheidet ihr.
 - 💬 Was lasst ihr Claude heute nicht allein machen?
 - Zwei Antworten vorlesen: Oben liefe genau das ohne euch. Was ist dann euer Beleg?
 - Und wer baut diese Stufen?
@@ -645,7 +712,7 @@ heading: "The steps where nobody watches"
 <div class="grid grid-cols-2 gap-8 w-full max-w-3xl">
   <div class="na-card p-6 pb-10 relative" style="border-color: var(--na-accent-500)">
     <div class="text-sm font-semibold mb-2 font-mono" style="color: var(--na-accent-500)">/batch</div>
-    <div class="text-lg">Many separate units, each ending as a tested pull request.</div>
+    <div class="text-lg">Many separate units, each tested, ending in a pull request or a report.</div>
     <DocLink card href="https://code.claude.com/docs/en/commands" />
   </div>
   <div v-click class="na-card p-6 pb-10 relative" style="border-color: var(--na-accent-500)">
@@ -657,9 +724,9 @@ heading: "The steps where nobody watches"
 
 <!--
 - Die Antwort auf den Cliffhanger, kein Werbeblock.
-- Links /batch: viele Einheiten, jede endet als getesteter PR.
+- Links /batch: viele Einheiten, jede getestet, am Ende ein PR oder ein Bericht.
 - [click] Rechts CI: Ein PR geht auf, ein eigener Agent prüft, niemand schaut zu.
-- Beides im Kurs, Teil IV, Task «Letting go».
+- Kurs Teil IV, «Letting go»: CI-Prüfer bauen, /batch kennenlernen.
 - Der Publish-Knopf der App ist die nächste Stufe: Task 19.
 - Deshalb der Kurs.
 -->
@@ -672,14 +739,14 @@ layout: concept
   <img src="/brand/nalogo-white-n.svg" alt="nextacademy.io" class="w-20 h-20" />
   <h1 class="!mb-0">Mastering Claude Code</h1>
   <p class="text-3xl font-semibold" style="color: var(--na-accent-500)">24–26 November</p>
-  <p class="text-xl max-w-2xl">Online · EUR 1290 · book by 18 November 2026 and save 25 %.</p>
+  <p class="text-xl max-w-2xl">Online · EUR 1290 · book by 18 November 2026 with the code <span class="font-mono" style="color: var(--na-accent-500)">TD2SJ59H</span> and save 25 %.</p>
   <div class="na-card px-6 py-4 font-mono text-xl" style="border-color: var(--na-accent-500)">nextacademy.io/de/workshops/claude-code</div>
 </div>
 
 <!--
 - 🖥 Kurslink in den Chat.
 - Der Kurs: 24. bis 26. November, online, 1290 Euro.
-- Wer bis zum 18. bucht, bekommt 25 Prozent.
+- Bis 18. buchen mit Code TD2SJ59H: 25 Prozent. Code in den Chat.
 - Keine Claude-Code-Erfahrung nötig, ein Pro-Abo reicht.
 - Jetzt eure Fragen. Höchstens 8 Minuten, bis 18:57.
 -->
@@ -691,7 +758,7 @@ heading: "You stayed to the end"
 
 <div v-click class="flex items-center gap-8">
   <div class="na-card px-8 py-6 text-2xl max-w-xl" style="border-color: var(--na-accent-500); box-shadow: var(--na-shadow-accent)">
-    Your gift: <span style="color: var(--na-accent-500); font-weight: 700">a repo with the guard-tests hook, a verification kit, a course task and a cheat sheet.</span>
+    Your gift: <span style="color: var(--na-accent-500); font-weight: 700">a repo with the guard-tests hook, a checker subagent, a course task and a cheat sheet.</span>
     <div class="font-mono text-base mt-4" style="color: var(--na-fg-muted)">github.com/nextacademy-io/claude-code-webinar</div>
   </div>
   <img src="/gift-qr.svg" alt="QR code: github.com/nextacademy-io/claude-code-webinar" class="w-44 h-44 rounded-lg" />

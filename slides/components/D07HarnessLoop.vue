@@ -6,7 +6,7 @@
 // The ring is a wide ellipse with the stations on its diagonals, so the whole
 // diagram fits a concept slide's graphic slot at 13 px text or more.
 // Prop `hooks`: PreToolUse (before the permission check) and PostToolUse badges
-// clipped onto the ring, a Stop pill at the exit, next to the exit path.
+// clipped onto the ring, a Stop pill on the exit path.
 // Prop `btw`: add a /btw square next to You with a direct line to Model,
 // bypassing the ring — a side question never enters the loop.
 import { useId } from 'vue'
@@ -119,10 +119,14 @@ const lit = !(props.hooks || props.btw)
         <text :x="pt(90).x" :y="pt(90).y + 5.5" text-anchor="middle" fill="var(--na-zinc-50)" font-weight="700" style="font-size: 15px">PostToolUse</text>
         <text :x="pt(90).x" y="327" text-anchor="middle" fill="var(--na-secondary-500)" font-weight="600" style="font-size: 15px">exit 2 → tool already ran, error goes to the model</text>
       </g>
+      <!-- the exit path without a click, so the Stop pill sits on it -->
+      <path d="M 622 152 C 800 152, 905 160, 911 99" fill="none" stroke="var(--na-zinc-400)" stroke-width="2.5" stroke-dasharray="7 5" :marker-end="marker('arrow')" />
+      <rect x="872" y="56.5" width="80" height="40" rx="8" fill="var(--na-bg-raised)" stroke="var(--na-zinc-500)" stroke-width="2" />
+      <text x="912" y="82.5" text-anchor="middle" fill="var(--na-fg)" font-weight="700" style="font-size: 17px">You</text>
       <g v-click="3">
-        <rect x="820" y="168" width="60" height="28" rx="14" fill="var(--na-error-500)" />
-        <text x="850" y="187.5" text-anchor="middle" fill="var(--na-zinc-50)" font-weight="700" style="font-size: 15px">Stop</text>
-        <text x="952" y="220" text-anchor="end" fill="var(--na-error-500)" font-weight="600" style="font-size: 15px">exit 2 → turn stays open</text>
+        <rect x="801" y="134" width="60" height="28" rx="14" fill="var(--na-error-500)" />
+        <text x="831" y="153.5" text-anchor="middle" fill="var(--na-zinc-50)" font-weight="700" style="font-size: 15px">Stop</text>
+        <text x="952" y="195" text-anchor="end" fill="var(--na-error-500)" font-weight="600" style="font-size: 15px">exit 2 → turn stays open</text>
       </g>
     </template>
 
