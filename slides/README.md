@@ -1,7 +1,7 @@
 # Slides
 
 The deck of the webinar "Claude Code Black Belt", built with [Slidev](https://sli.dev). Slides in
-English, notes in German. The notes under each slide explain it, so the deck reads on its own.
+English, notes in German. The notes under each slide are the trainer's cues.
 
 ```bash
 npm install

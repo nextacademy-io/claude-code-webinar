@@ -1,0 +1,12 @@
+# Empty placeholders Claude Code leaves when it runs commands here in the dev container
+/.env*
+/.gitmodules
+/.npmrc
+/.yarnrc
+/.yarnrc.yml
+/bunfig.toml
+/package.json
+/package-lock.json
+/pnpm-lock.yaml
+/yarn.lock
+/node_modules/

@@ -131,7 +131,7 @@ function callClaude(level) {
   const env = { ...process.env }
   delete env.CLAUDECODE // a nested "claude" refuses to start while it is set; dropping it lets this script run from a Claude Code session
   const claudeArgs = ['-p', '--model', MODEL, '--effort', level, '--output-format', 'json', PROMPT]
-  // On Windows "claude" is a .cmd shim that only starts through a shell, and a shell splits the
+  // On Windows "claude" may be a .cmd shim (npm install) that only starts through a shell, and a shell splits the
   // prompt at spaces unless it is quoted. Elsewhere the args pass through as they are.
   const child =
     process.platform === 'win32'

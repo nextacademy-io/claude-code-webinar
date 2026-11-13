@@ -10,7 +10,7 @@ const modes = [
   { key: 'accept', label: 'accept edits', meaning: 'file edits pass, most commands ask' },
   { key: 'plan', label: 'plan', meaning: 'looks, plans, edits no code' },
   { key: 'auto', label: 'auto', meaning: 'a classifier blocks the risky actions instead of asking' },
-  { key: 'bypass', label: 'bypass', meaning: 'rarely asks — containers and VMs only' },
+  { key: 'bypass', label: 'bypass', meaning: 'rarely asks, containers and VMs only' },
 ]
 </script>
 
@@ -65,7 +65,7 @@ const modes = [
     <text x="741" y="164" text-anchor="middle" fill="var(--na-fg-muted)" style="font-size: 14px">the model is told why</text>
 
     <!-- modes -->
-    <text x="2" y="206" fill="var(--na-fg-muted)" font-weight="600" style="font-size: 14px">MODE  ·  how often the gate asks you</text>
+    <text x="2" y="206" fill="var(--na-fg-muted)" font-weight="600" style="font-size: 14px">mode  ·  how often the gate asks you</text>
     <g v-for="(m, i) in modes" :key="m.key">
       <rect :x="2 + i * 170" y="216" width="158" height="36" rx="18" fill="var(--na-bg-raised)" stroke="var(--na-zinc-600)" stroke-width="1.5" />
       <g v-click="4 + i"><rect :x="2 + i * 170" y="216" width="158" height="36" rx="18" fill="var(--na-primary-900)" stroke="var(--na-accent-500)" stroke-width="2.5" /></g>

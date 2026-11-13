@@ -9,8 +9,8 @@ hidden in `review.ts`. While it runs, one horse per level gallops over one hurdl
 You need Node.js and Claude Code (`claude` on the path), logged in.
 
 1. Make an empty folder outside any repository and copy `measure.mjs` and `review.ts` into it.
-   Inside a repository Claude Code loads that repository's `CLAUDE.md` and hooks, and the
-   measurement no longer compares like with like.
+   Claude Code loads the `CLAUDE.md` files of the folder and its parents: in a project, its rules
+   would steer the review, and the measurement no longer compares like with like.
 2. Unset `CLAUDE_CODE_EFFORT_LEVEL`. It overrides `--effort`, and the script refuses to start while
    it is set.
 3. In that folder:
@@ -27,6 +27,8 @@ node measure.mjs 5
 | `node measure.mjs score` | score the runs already in `runs/`, start nothing |
 | `--plain` | no animation, one line per finished run |
 | `--rightward` | the horses run left to right; by default they run right to left, the way most emoji fonts draw 🏇 |
+
+The script runs `sonnet`. To race another model, change `MODEL` at the top of `measure.mjs`.
 
 Every answer lands in `runs/<level>-NN.json` plus a readable `.md` copy. A second call numbers on
 from the last run, so `5` twice gives ten per level. Delete `runs/` to start over.
@@ -49,5 +51,6 @@ Measured for the course, ten runs per level on Sonnet 5.5:
 | low | 10 of 10 runs | 0 | 1366 |
 | high | 10 of 10 runs | 0 | 1658 |
 
-High spent its extra tokens on longer proofs, not on more findings. That holds for this small task
-and this model. Measure your own.
+High used more tokens and found no more bugs. How many more varies a lot:
+another series of runs gave a median of 894 at low and 2846 at high. That holds for this small
+task and this model. Measure your own.
